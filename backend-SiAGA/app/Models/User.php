@@ -6,27 +6,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Kolom yang dapat diisi (Mass Assignment).
+     * Sesuai dengan spesifikasi: id, name, username, password, role, region_id, notification_token[cite: 45, 72].
      */
     protected $fillable = [
         'name',
-        'email',
+        'username',
         'password',
+        'role',                // admin, petugas, public
+        'region_id',           // Relasi ke tabel regions [cite: 55]
+        'notification_token',  // Untuk push notification [cite: 44]
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Kolom yang disembunyikan saat serialisasi JSON (untuk keamanan API).
      */
     protected $hidden = [
         'password',
@@ -34,15 +37,53 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Cast kolom ke tipe data tertentu.
      */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relasi ke Wilayah (Hanya untuk Role: Public).
+     * Setiap user public terhubung ke satu wilayah berpotensi banjir[cite: 55, 72].
+     */
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    /**
+     * Relasi ke Laporan Petugas (Hanya untuk Role: Petugas).
+     * Seorang petugas bisa mengirim banyak laporan kondisi pintu air[cite: 60, 62].
+     */
+    public function officerReports(): HasMany
+    {
+        return $this->hasMany(OfficerReport::class, 'officer_id');
+    }
+
+    /**
+     * Relasi ke Laporan Masyarakat (Hanya untuk Role: Public).
+     * User public dapat mengirimkan banyak laporan kejadian banjir[cite: 70, 72].
+     */
+    public function publicReports(): HasMany
+    {
+        return $this->hasMany(PublicReport::class);
+    }
+
+    /**
+     * Relasi ke Notifications: Satu user bisa memiliki banyak notifikasi.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class)->latest();
+    }
+
+    public function assignedStations()
+    {
+        // Petugas memiliki banyak stasiun yang ditugaskan
+        return $this->belongsToMany(Station::class, 'station_user');
     }
 }
