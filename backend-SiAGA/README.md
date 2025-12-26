@@ -1,52 +1,179 @@
+# 🌊 SiAGA Banjir - Backend API
+
+**Sistem Informasi Alerting dan Monitoring Banjir**  
+Laravel 10 + Flutter Mobile App
+
+---
+
+## 📱 Overview
+
+SiAGA Banjir adalah sistem monitoring dan peringatan dini banjir berbasis mobile app (Flutter) dengan backend Laravel. Sistem ini melayani 3 role utama:
+
+- **👨‍💼 Admin**: Mengelola stasiun, petugas, validasi laporan, dan broadcast notifikasi
+- **👮 Petugas**: Melaporkan kondisi teknis stasiun (ketinggian air, curah hujan, status pompa)
+- **👥 Masyarakat**: Melaporkan kejadian banjir, menerima peringatan, dan monitoring status wilayah
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- PHP 8.1+
+- Composer
+- MySQL/PostgreSQL
+- Laravel 10
+
+### Installation
+
+1. **Install Dependencies**
+```bash
+composer install
+```
+
+2. **Setup Environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Edit `.env`:
+```env
+DB_DATABASE=siaga_banjir
+DB_USERNAME=root
+DB_PASSWORD=
+
+FIREBASE_CREDENTIALS=path/to/firebase-credentials.json
+```
+
+3. **Run Migration**
+```bash
+php artisan migrate
+php artisan db:seed  # Optional
+```
+
+4. **Create Storage Link**
+```bash
+php artisan storage:link
+```
+
+5. **Start Server**
+```bash
+php artisan serve
+# Backend running at http://localhost:8000
+```
+
+---
+
+## 📚 Documentation untuk Tim Frontend Flutter
+
+### ⭐ START HERE
+**[FLUTTER_INTEGRATION_GUIDE.md](FLUTTER_INTEGRATION_GUIDE.md)** - Panduan lengkap integrasi Flutter
+- Setup project & dependencies
+- API service layer (ready to copy Dart code)
+- Authentication, file upload, FCM, maps
+- Code examples & best practices
+
+### 📖 Complete Documentation
+1. **[BACKEND_API_DOCUMENTATION.md](BACKEND_API_DOCUMENTATION.md)** - 48 API endpoints lengkap
+2. **[HTML_TO_API_MAPPING.md](HTML_TO_API_MAPPING.md)** - Mapping UI ke API
+3. **[FRONTEND_QUICK_START.md](FRONTEND_QUICK_START.md)** - Quick start guide
+4. **[DATABASE_SCHEMA.md](DATABASE_SCHEMA.md)** - Database schema & ERD
+5. **[BACKEND_UPDATE_SUMMARY.md](BACKEND_UPDATE_SUMMARY.md)** - Update summary
+
+---
+
+## 🎯 API Endpoints (48 Total)
+
+- **Auth**: Register, Login, Logout (2 endpoints)
+- **Profile**: Get, Update, Change Password, Upload Photo (4 endpoints)
+- **Public/User**: Dashboard, Reports, Notifications (10 endpoints)
+- **Officer**: Dashboard, Reports, Stations (5 endpoints)
+- **Admin**: Dashboard, Stations, Officers, Validation, Analytics (22 endpoints)
+- **Common**: Stations list, Regions list (5 endpoints)
+
+**See full documentation**: [BACKEND_API_DOCUMENTATION.md](BACKEND_API_DOCUMENTATION.md)
+
+---
+
+## 🔐 Authentication
+
+Backend menggunakan **Laravel Sanctum** (Bearer Token).
+
+Flutter Example:
+```dart
+headers: {
+  'Authorization': 'Bearer $token',
+  'Accept': 'application/json',
+}
+```
+
+---
+
+## 📦 Main Features
+
+✅ Role-based authentication (Admin, Petugas, Public)  
+✅ Dashboard dengan analytics & grafik  
+✅ Station management (CRUD, threshold, assign officers)  
+✅ Officer management  
+✅ Report system (officer & public)  
+✅ Report validation workflow  
+✅ Push notification (FCM)  
+✅ Notification management  
+✅ Region & flood potential monitoring  
+✅ Profile management dengan photo  
+✅ Real-time station status  
+✅ Map data dengan koordinat  
+
+---
+
+## 🤝 Untuk Tim Frontend
+
+### Base URL Flutter:
+
+**Android Emulator**:
+```dart
+static const String baseUrl = 'http://10.0.2.2:8000/api';
+```
+
+**iOS Simulator**:
+```dart
+static const String baseUrl = 'http://localhost:8000/api';
+```
+
+### Integration Steps:
+1. Read: [FLUTTER_INTEGRATION_GUIDE.md](FLUTTER_INTEGRATION_GUIDE.md)
+2. Copy API service layer (Dart code ready)
+3. Implement authentication flow
+4. Build screens sesuai [HTML_TO_API_MAPPING.md](HTML_TO_API_MAPPING.md)
+5. Test dengan backend
+
+---
+
+## 📝 Notes
+
+- Response format: JSON
+- File max: 2MB (jpeg/png)
+- Pagination: 10-20 items
+- Date format: ISO 8601
+
+---
+
+## 📧 Support
+
+Need help?
+- **API Docs**: [BACKEND_API_DOCUMENTATION.md](BACKEND_API_DOCUMENTATION.md)
+- **Flutter Guide**: [FLUTTER_INTEGRATION_GUIDE.md](FLUTTER_INTEGRATION_GUIDE.md)
+- **Database Schema**: [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md)
+
+---
+
+**🎉 Backend ready untuk integrasi Flutter!**
+
+Last Updated: 25 Desember 2025
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 

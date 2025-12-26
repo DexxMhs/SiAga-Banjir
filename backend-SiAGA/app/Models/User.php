@@ -21,11 +21,13 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'email',
         'username',
         'password',
         'role',                // admin, petugas, public
         'region_id',           // Relasi ke tabel regions [cite: 55]
         'notification_token',  // Untuk push notification [cite: 44]
+        'photo',               // Foto profil user
     ];
 
     /**
