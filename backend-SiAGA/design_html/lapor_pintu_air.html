@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Lapor Kondisi Pintu Air</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "surface-dark": "#1c1f27",
+              "border-dark": "#282e39",
+              "text-secondary": "#9da6b9",
+            },
+            fontFamily: {
+              display: ["Public Sans", "Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar for better look in dark mode */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #101622;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #282e39;
+        border-radius: 3px;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-white h-screen flex flex-col overflow-hidden max-w-md mx-auto relative shadow-2xl"
+  >
+    <!-- Top App Bar -->
+    <header
+      class="flex items-center bg-white dark:bg-background-dark px-4 py-3 justify-between border-b border-gray-200 dark:border-border-dark shrink-0 z-20"
+    >
+      <form action="dashboard_petugas.html">
+        <button
+          class="flex w-16 items-center justify-start text-text-secondary hover:text-primary transition-colors"
+        >
+          <span class="text-base font-medium">Batal</span>
+        </button>
+      </form>
+      <h2
+        class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-tight text-center flex-1"
+      >
+        Buat Laporan
+      </h2>
+    </header>
+    <!-- Scrollable Content -->
+    <main class="flex-1 overflow-y-auto pb-24">
+      <!-- Meta Info -->
+      <div class="pt-4 px-4 pb-2 text-center">
+        <div
+          class="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-primary/10 mb-2"
+        >
+          <span class="material-symbols-outlined text-primary text-sm"
+            >location_on</span
+          >
+          <span class="text-primary text-xs font-bold uppercase tracking-wide"
+            >Pintu Air Manggarai</span
+          >
+        </div>
+        <p class="text-text-secondary text-sm font-normal">
+          24 Okt 2023, 14:30 WIB
+        </p>
+      </div>
+      <div class="h-4"></div>
+      <!-- Water Level Input Section -->
+      <div class="px-4">
+        <div
+          class="bg-white dark:bg-surface-dark rounded-xl p-5 border border-gray-200 dark:border-border-dark shadow-sm"
+        >
+          <!-- Numeric Input -->
+          <label class="block mb-4">
+            <p
+              class="text-gray-900 dark:text-white text-base font-semibold leading-normal pb-2"
+            >
+              Ketinggian Air (cm)
+            </p>
+            <div class="flex w-full items-stretch rounded-xl shadow-sm">
+              <input
+                class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-border-dark bg-gray-50 dark:bg-[#111318] h-16 text-3xl font-bold p-4 text-center placeholder:text-text-secondary"
+                inputmode="numeric"
+                type="number"
+                value="0"
+              />
+              <div
+                class="flex flex-col border border-l-0 border-gray-300 dark:border-border-dark bg-gray-100 dark:bg-[#232936] w-14 rounded-r-xl overflow-hidden"
+              >
+                <button
+                  class="flex-1 hover:bg-gray-200 dark:hover:bg-border-dark flex items-center justify-center text-text-secondary active:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-sm">add</span>
+                </button>
+                <div
+                  class="h-[1px] bg-gray-300 dark:bg-border-dark w-full"
+                ></div>
+                <button
+                  class="flex-1 hover:bg-gray-200 dark:hover:bg-border-dark flex items-center justify-center text-text-secondary active:text-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-sm">remove</span>
+                </button>
+              </div>
+            </div>
+          </label>
+          <!-- Slider -->
+          <div class="flex flex-col gap-3 py-2">
+            <div
+              class="flex justify-between items-center text-xs font-medium text-text-secondary uppercase tracking-wider"
+            >
+              <span>Min (0)</span>
+              <span>Max (300)</span>
+            </div>
+            <div class="relative h-6 flex items-center group cursor-pointer">
+              <div
+                class="absolute w-full h-1.5 bg-gray-200 dark:bg-border-dark rounded-full overflow-hidden"
+              >
+                <div class="h-full bg-primary w-1/2"></div>
+              </div>
+              <div
+                class="absolute left-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full shadow-md border-2 border-primary cursor-grab hover:scale-110 transition-transform"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="h-4"></div>
+      <!-- Status Chips -->
+      <div class="px-4">
+        <p
+          class="text-gray-900 dark:text-white text-sm font-semibold mb-3 ml-1"
+        >
+          Status Siaga
+        </p>
+        <div class="grid grid-cols-4 gap-2">
+          <!-- Normal -->
+          <button
+            class="flex flex-col items-center justify-center h-14 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark hover:border-green-500/50 hover:bg-green-500/5 transition-all group"
+          >
+            <div
+              class="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-green-500 mb-1.5 transition-colors"
+            ></div>
+            <span
+              class="text-text-secondary group-hover:text-green-500 text-[10px] font-bold uppercase"
+              >Normal</span
+            >
+          </button>
+          <!-- Waspada (Active) -->
+          <button
+            class="flex flex-col items-center justify-center h-14 rounded-lg bg-yellow-500/10 border border-yellow-500 relative ring-1 ring-yellow-500/20"
+          >
+            <div
+              class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full flex items-center justify-center"
+            >
+              <span
+                class="material-symbols-outlined text-[8px] text-black font-bold"
+                >check</span
+              >
+            </div>
+            <div class="w-2 h-2 rounded-full bg-yellow-500 mb-1.5"></div>
+            <span class="text-yellow-500 text-[10px] font-bold uppercase"
+              >Waspada</span
+            >
+          </button>
+          <!-- Siaga -->
+          <button
+            class="flex flex-col items-center justify-center h-14 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark hover:border-orange-500/50 hover:bg-orange-500/5 transition-all group"
+          >
+            <div
+              class="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-orange-500 mb-1.5 transition-colors"
+            ></div>
+            <span
+              class="text-text-secondary group-hover:text-orange-500 text-[10px] font-bold uppercase"
+              >Siaga</span
+            >
+          </button>
+          <!-- Awas -->
+          <button
+            class="flex flex-col items-center justify-center h-14 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark hover:border-red-500/50 hover:bg-red-500/5 transition-all group"
+          >
+            <div
+              class="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-red-500 mb-1.5 transition-colors"
+            ></div>
+            <span
+              class="text-text-secondary group-hover:text-red-500 text-[10px] font-bold uppercase"
+              >Awas</span
+            >
+          </button>
+        </div>
+      </div>
+      <div class="h-5"></div>
+      <!-- Camera Section -->
+      <div class="px-4">
+        <p
+          class="text-gray-900 dark:text-white text-sm font-semibold mb-3 ml-1"
+        >
+          Foto Bukti Lapangan
+        </p>
+        <div
+          class="aspect-[16/9] w-full bg-gray-50 dark:bg-surface-dark rounded-xl border-2 border-dashed border-gray-300 dark:border-border-dark hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer flex flex-col items-center justify-center group relative overflow-hidden"
+        >
+          <!-- Abstract gradient placeholder simulating a view -->
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+            style="
+              background: radial-gradient(
+                circle at center,
+                rgba(19, 91, 236, 0.08) 0%,
+                transparent 70%
+              );
+            "
+          ></div>
+          <div
+            class="w-12 h-12 rounded-full bg-gray-200 dark:bg-[#282e39] flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all text-text-secondary"
+          >
+            <span class="material-symbols-outlined text-2xl">photo_camera</span>
+          </div>
+          <p
+            class="text-text-secondary font-medium text-sm group-hover:text-primary transition-colors"
+          >
+            Ambil Foto Terkini
+          </p>
+          <img
+            class="absolute inset-0 w-full h-full opacity-0"
+            data-alt="Placeholder area for camera viewfinder with dashed border"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWoYhNNSAMc-zBFRqxXFr6Sqyg-HZr9Ph5Ucf2ACkbNq_0REBmgefkgX0QX5xpwWqxRbzCAeXz0jLF8GtTFT-F-nVwzyDiZtkkOYUMqP08KFjso4YQjfyvhyxdebPq2BJmuXo7fzsZJ9ZP4R4V77Vjm5RBV2zaKfQZ4p9CURRYX2_FmXvK8GTXnneH11sr-GVMwuGs6VtG1Ico7Zwqd7vKe1X3Dt5ZL3HqUIkzz8kIJeItidORnfSd5HpoBIJzDJ6CH46YwWMXEaYA"
+          />
+        </div>
+      </div>
+      <div class="h-5"></div>
+      <!-- Notes Section -->
+      <div class="px-4">
+        <label class="block">
+          <p
+            class="text-gray-900 dark:text-white text-sm font-semibold mb-3 ml-1"
+          >
+            Catatan Tambahan
+          </p>
+          <div class="relative">
+            <textarea
+              class="form-textarea w-full bg-gray-50 dark:bg-surface-dark border border-gray-300 dark:border-border-dark rounded-xl p-4 text-gray-900 dark:text-white focus:ring-1 focus:ring-primary focus:border-primary min-h-[100px] resize-none text-sm leading-relaxed placeholder:text-text-secondary/70"
+              placeholder="Tulis kondisi cuaca, kendala, atau info penting lainnya..."
+            ></textarea>
+            <div class="absolute bottom-3 right-3 pointer-events-none">
+              <span
+                class="material-symbols-outlined text-text-secondary text-lg"
+                >edit_note</span
+              >
+            </div>
+          </div>
+        </label>
+      </div>
+      <div class="h-8"></div>
+    </main>
+    <!-- Bottom Action Button -->
+
+    <div
+      class="p-4 bg-white/90 dark:bg-background-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-border-dark absolute bottom-0 w-full z-30"
+    >
+      <form action="detail_laporan.html">
+        <button
+          class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 px-6 transition-transform active:scale-[0.98] shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:bg-blue-600"
+        >
+          <span class="material-symbols-outlined text-white text-xl">send</span>
+          <span class="text-white text-base font-bold tracking-wide"
+            >Kirim Laporan</span
+          >
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

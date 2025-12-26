@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Profil Petugas</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "surface-dark": "#1c2333", // Slightly lighter than background-dark for cards
+            },
+            fontFamily: {
+              display: ["Public Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111318] dark:text-white overflow-x-hidden antialiased"
+  >
+    <div
+      class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark"
+    >
+      <!-- Top App Bar -->
+      <div
+        class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800"
+      >
+        <form action="dashboard_petugas.html">
+        <button
+          class="text-[#111318] dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+        >
+          <span class="material-symbols-outlined" style="font-size: 24px"
+            >arrow_back</span
+          >
+        </button>
+        </form>
+        <h2
+          class="text-[#111318] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12"
+        >
+          Profil Petugas
+        </h2>
+      </div>
+      <!-- Profile Header -->
+      <div class="flex p-4 flex-col items-center pt-8">
+        <div class="relative group cursor-pointer">
+          <div
+            class="bg-center bg-no-repeat bg-cover rounded-full h-32 w-32 shadow-lg border-4 border-white dark:border-[#2a3140]"
+            data-alt="Portrait of officer Budi Santoso"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEKdjdh72hKR4UMLsTuQErThX7gQL2uYIuFZ5APckQh1yqzb7fhV8_YXxf3ne2BqTwypfVZG6h545SP1qSfKyhfiggiVkejx-DdeIfO1bT88M1d4TW7YRazaV0IgmlsT6He6SF7DgrGQY5kuER7ZiHHxJMPNVug_8UP2ULzb7lUMSwJOELt_fScwUUlbI7WFE8UNbI01DUDYPOrGQeD6kFtKhMjDGz-G7rDzrcce3K2LsqxjOYpplC9UGooKfHp4ZfzNJYIUxwiXBN');
+            "
+          ></div>
+          <div
+            class="absolute bottom-0 right-0 bg-primary p-2 rounded-full border-4 border-background-light dark:border-background-dark flex items-center justify-center shadow-md"
+          >
+            <span
+              class="material-symbols-outlined text-white"
+              style="font-size: 18px"
+              >edit</span
+            >
+          </div>
+        </div>
+        <div class="flex flex-col items-center justify-center mt-4 gap-1">
+          <p
+            class="text-[#111318] dark:text-white text-2xl font-bold leading-tight"
+          >
+            Budi Santoso
+          </p>
+          <div class="flex items-center gap-2 mt-1">
+            <span
+              class="px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary rounded-full text-xs font-semibold"
+              >Petugas Lapangan</span
+            >
+          </div>
+          <p
+            class="text-gray-500 dark:text-[#9da6b9] text-sm font-normal leading-normal mt-1"
+          >
+            NIP: 19850101 201001 1 001
+          </p>
+        </div>
+      </div>
+      <!-- Section: Lokasi Tugas -->
+      <div class="px-4 mt-2">
+        <h3
+          class="text-[#111318] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3"
+        >
+          Lokasi Tugas
+        </h3>
+        <div
+          class="flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1c2333] p-4 shadow-sm border border-gray-100 dark:border-gray-800"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex flex-col gap-2 flex-1">
+              <div>
+                <p
+                  class="text-gray-500 dark:text-[#9da6b9] text-xs font-medium uppercase tracking-wider mb-1"
+                >
+                  Pos Ditugaskan
+                </p>
+                <p
+                  class="text-[#111318] dark:text-white text-lg font-bold leading-tight flex items-center gap-2"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary"
+                    style="font-size: 20px"
+                    >water_drop</span
+                  >
+                  Pos Angke Hulu
+                </p>
+              </div>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
+                  ></span>
+                  <span
+                    class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"
+                  ></span>
+                </span>
+                <p
+                  class="text-green-600 dark:text-green-400 text-sm font-medium leading-normal"
+                >
+                  Status: Sedang Bertugas
+                </p>
+              </div>
+            </div>
+            <button
+              class="shrink-0 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-[#2a3140] text-[#111318] dark:text-white p-2 hover:bg-gray-200 dark:hover:bg-[#343b4d] transition-colors"
+            >
+              <span class="material-symbols-outlined" style="font-size: 20px"
+                >visibility</span
+              >
+            </button>
+          </div>
+          <div class="w-full h-32 rounded-lg overflow-hidden relative">
+            <div class="absolute inset-0 bg-black/10 z-10"></div>
+            <!-- Map Image -->
+            <div
+              class="w-full h-full bg-center bg-no-repeat bg-cover"
+              data-alt="Map location of Pos Angke Hulu"
+              data-location="Jakarta"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCxaeqYzjJdK0rtQbWBzeA8Dke7rCkL2vPm48zAauT4I83CmHoKGKBl5irZOsHmj3OMrS23K1AJr8byf2eY43Va-x5A48mwbLzwg47vxn8jQtiPwFUsECdAS3JdOFQW6OTuIbg-ZxfVl8ygX8MNzxcha5mdkpbV1O7ASSFxQNfH-aTXsJninjWCXhjeQSJwU3_FmRMPYNuBY8gOWh-gpMdgSft3NV5j2ILiR14WknBJUcufbMos_WGy0JckfZN1nGqsnyU-pHX3pxCA');
+              "
+            ></div>
+            <div
+              class="absolute bottom-2 right-2 z-20 bg-white/90 dark:bg-black/70 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-medium text-black dark:text-white flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-[10px]"
+                >location_on</span
+              >
+              Jakarta
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Section: Informasi Kontak -->
+      <div class="px-4 mt-6">
+        <h3
+          class="text-[#111318] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3"
+        >
+          Informasi Kontak
+        </h3>
+        <div
+          class="flex flex-col rounded-xl bg-white dark:bg-[#1c2333] divide-y divide-gray-100 dark:divide-gray-800 shadow-sm border border-gray-100 dark:border-gray-800"
+        >
+          <!-- Email Item -->
+          <div class="flex items-center gap-4 p-4">
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-primary"
+            >
+              <span class="material-symbols-outlined">mail</span>
+            </div>
+            <div class="flex flex-col flex-1 overflow-hidden">
+              <p
+                class="text-[#111318] dark:text-white text-sm font-bold truncate"
+              >
+                Email
+              </p>
+              <p class="text-gray-500 dark:text-[#9da6b9] text-sm truncate">
+                budi.s@monitoringbanjir.id
+              </p>
+            </div>
+            <button class="text-gray-400 hover:text-primary transition-colors">
+              <span class="material-symbols-outlined" style="font-size: 20px"
+                >content_copy</span
+              >
+            </button>
+          </div>
+          <!-- Phone Item -->
+          <div class="flex items-center gap-4 p-4">
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-primary"
+            >
+              <span class="material-symbols-outlined">call</span>
+            </div>
+            <div class="flex flex-col flex-1">
+              <p class="text-[#111318] dark:text-white text-sm font-bold">
+                No. HP
+              </p>
+              <p class="text-gray-500 dark:text-[#9da6b9] text-sm">
+                +62 812 3456 7890
+              </p>
+            </div>
+            <button class="text-gray-400 hover:text-primary transition-colors">
+              <span class="material-symbols-outlined" style="font-size: 20px"
+                >content_copy</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Section: Actions -->
+      <div class="px-4 mt-8 mb-24 flex flex-col gap-3">
+        <button
+          class="flex w-full items-center justify-center rounded-lg bg-primary hover:bg-primary/90 transition-colors h-12 px-5 text-white text-base font-bold shadow-lg shadow-primary/25"
+        >
+          <span class="material-symbols-outlined mr-2" style="font-size: 20px"
+            >edit_square</span
+          >
+          Edit Profil
+        </button>
+        <button
+          class="flex w-full items-center justify-center rounded-lg bg-transparent border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors h-12 px-5 text-[#111318] dark:text-white text-base font-medium"
+        >
+          <span class="material-symbols-outlined mr-2" style="font-size: 20px"
+            >lock_reset</span
+          >
+          Ubah Kata Sandi
+        </button>
+        <form action="login_petugas.html">
+        <button
+          class="flex w-full items-center justify-center rounded-lg bg-transparent hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors h-12 px-5 text-red-600 dark:text-red-400 text-base font-medium mt-2"
+        >
+          <span class="material-symbols-outlined mr-2" style="font-size: 20px"
+            >logout</span
+          >
+          Keluar
+        </button>
+        </form>
+      </div>
+      </div>
+    </div>
+  </body>
+</html>

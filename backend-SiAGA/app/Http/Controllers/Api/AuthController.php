@@ -30,7 +30,16 @@ class AuthController extends Controller
             'message' => 'Registrasi berhasil',
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'username' => $user->username,
+                'email' => $user->email ?? '',
+                'role' => $user->role,
+                'region_id' => $user->region_id,
+                'photo' => $user->photo ?? '',
+                'notification_token' => $user->notification_token ?? ''
+            ]
         ], 201);
     }
 
@@ -57,8 +66,11 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
+                'email' => $user->email ?? '',
                 'role' => $user->role, // Penting untuk navigasi di Flutter
-                'region_id' => $user->region_id
+                'region_id' => $user->region_id,
+                'photo' => $user->photo ?? '',
+                'notification_token' => $user->notification_token ?? ''
             ]
         ]);
     }

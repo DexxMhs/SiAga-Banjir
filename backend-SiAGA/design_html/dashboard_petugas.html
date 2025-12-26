@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Daftar Pos Pantau</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "surface-dark": "#1a2230",
+              "surface-light": "#ffffff",
+            },
+            fontFamily: {
+              display: ["Public Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "0.75rem",
+              xl: "1rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar hide for horizontal scrolling */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col antialiased"
+  >
+    <!-- Top App Bar -->
+    <header
+      class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300"
+    >
+      <div class="flex items-center justify-between p-4 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div
+              class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20"
+              data-alt="Portrait of a male officer in uniform"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNQU464U0bsA0JY-tEIcu-hFSG9Jm71m_SIwcx297fCjWHgd1bisLxY429Khg8NXB6ZI0ue5KzQppR-i5Pb7DhxVJ1kk71eUZTgeNZE3EjWimSbWfJPtSH6joB2A9YsMRMP8xOYW3_9VVaMCdvo_sSiu2ofqwa0r3-qzQm1ZPTxObiJUXKMdgNP9ZpAhw0XB_riKMdZAs-Sr2wbXsy8LPmJQZLdahStc9a5a490tnXvzRW38RKv6etUJ5IwQQAgobsafcGzIxupM6u');
+              "
+            ></div>
+            <div
+              class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-background-dark"
+            ></div>
+          </div>
+          <div>
+            <h1
+              class="text-gray-900 dark:text-white text-base font-bold leading-tight"
+            >
+              Halo, Petugas Budi
+            </h1>
+            <p class="text-gray-500 dark:text-gray-400 text-xs">
+              Selasa, 14 Nov 2023
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 dark:hover:bg-surface-dark transition-colors text-gray-600 dark:text-gray-300 relative"
+          >
+            <span class="material-symbols-outlined">notifications</span>
+            <span
+              class="absolute top-2 right-2 size-2.5 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto pb-24">
+      <!-- Stats Section -->
+      <section class="px-4 py-4">
+        <h2 class="text-gray-900 dark:text-white text-lg font-bold mb-3">
+          Ringkasan Status
+        </h2>
+        <div class="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+          <!-- Total Posts -->
+          <div
+            class="min-w-[140px] flex-1 bg-surface-light dark:bg-surface-dark rounded-xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden group"
+          >
+            <div
+              class="absolute right-[-10px] top-[-10px] opacity-5 dark:opacity-10 transition-transform group-hover:scale-110"
+            >
+              <span class="material-symbols-outlined text-6xl">water_drop</span>
+            </div>
+            <div
+              class="flex items-center gap-2 text-gray-500 dark:text-gray-400"
+            >
+              <span class="material-symbols-outlined text-xl">dataset</span>
+              <span class="text-sm font-medium">Total Pos</span>
+            </div>
+            <p class="text-gray-900 dark:text-white text-3xl font-bold mt-2">
+              12
+            </p>
+          </div>
+          <!-- Alert Stats (Siaga) -->
+          <div
+            class="min-w-[140px] flex-1 bg-red-50 dark:bg-red-900/10 rounded-xl p-4 border border-red-100 dark:border-red-900/30 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden"
+          >
+            <div class="flex items-center gap-2 text-red-600 dark:text-red-400">
+              <span class="material-symbols-outlined text-xl">warning</span>
+              <span class="text-sm font-medium">Awas</span>
+            </div>
+            <p class="text-red-700 dark:text-red-400 text-3xl font-bold mt-2">
+              2
+            </p>
+          </div>
+          <!-- Warning Stats (Awas) -->
+          <div
+            class="min-w-[140px] flex-1 bg-orange-50 dark:bg-orange-900/10 rounded-xl p-4 border border-orange-100 dark:border-orange-900/30 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden"
+          >
+            <div
+              class="flex items-center gap-2 text-orange-600 dark:text-orange-400"
+            >
+              <span class="material-symbols-outlined text-xl">error</span>
+              <span class="text-sm font-medium">Siaga</span>
+            </div>
+            <p
+              class="text-orange-700 dark:text-orange-400 text-3xl font-bold mt-2"
+            >
+              3
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- Search Bar -->
+      <section
+        class="px-4 pb-2 sticky top-[72px] z-40 bg-background-light dark:bg-background-dark pt-2"
+      >
+        <div class="relative group">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <span
+              class="material-symbols-outlined text-gray-400 dark:text-gray-500"
+              >search</span
+            >
+          </div>
+          <input
+            class="block w-full pl-10 pr-3 py-3 border-none rounded-xl leading-5 bg-white dark:bg-surface-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary shadow-sm transition-all text-base"
+            placeholder="Cari nama pos atau lokasi..."
+            type="text"
+          />
+        </div>
+      </section>
+      <!-- Filter Chips -->
+      <section class="px-4 py-2">
+        <div class="flex gap-2 overflow-x-auto no-scrollbar">
+          <button
+            class="shrink-0 h-9 px-4 rounded-full bg-primary text-white text-sm font-medium shadow-md shadow-primary/20 transition-transform active:scale-95"
+          >
+            Semua
+          </button>
+          <button
+            class="shrink-0 h-9 px-4 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-medium whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors active:scale-95"
+          >
+            Normal
+          </button>
+          <button
+            class="shrink-0 h-9 px-4 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-medium whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors active:scale-95"
+          >
+            Siaga
+          </button>
+          <button
+            class="shrink-0 h-9 px-4 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-sm font-medium whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors active:scale-95"
+          >
+            Awas
+          </button>
+        </div>
+      </section>
+      <!-- Post List Header -->
+      <section class="px-4 pt-4 pb-2 flex justify-between items-end">
+        <h3 class="text-gray-900 dark:text-white text-lg font-bold">
+          Pos Ditugaskan
+        </h3>
+        <button
+          class="text-primary text-sm font-medium flex items-center gap-1 hover:text-primary/80"
+        >
+          Filter
+          <span class="material-symbols-outlined text-sm">filter_list</span>
+        </button>
+      </section>
+      <!-- Post List -->
+      <form action="lapor_pintu_air.html">
+        <section class="px-4 space-y-4">
+          <!-- Card 1: Critical (Awas) -->
+          <article
+            class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-l-red-500 border-t border-r border-b border-gray-100 dark:border-gray-800 transition-all hover:shadow-md"
+          >
+            <div class="flex justify-between items-start mb-3">
+              <div class="flex gap-3">
+                <div
+                  class="size-12 rounded-lg bg-gray-100 dark:bg-gray-800 bg-cover bg-center shrink-0"
+                  data-alt="Map view of Manggarai water gate area"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDx57KHS8jpAUxyuL3lmc3KEMuT-3X_iWFvb5Ot7WYRksvly-mQgrWcR6N806LvZDiNJ9u42fLtRum5axCCF9bnLSNcWyGyC-jivkqi8UkMm4CGIHCyzrqwZAkDmju7nQk_tRtbzVBMplOelG-Hqznrwcu6c9Pp0QDfuJy3n-t2xchqAtpb6iKS33B0vX9NrQk1cWT2UbG2jkWtcCc51Gf5ST4St58ul8KZRPLVzU36h9zJKW0SCvReV98rfL7Sdeyb1U4HUq9GMKBP');
+                  "
+                ></div>
+                <div>
+                  <h4
+                    class="text-gray-900 dark:text-white font-bold text-base leading-tight"
+                  >
+                    Pintu Air Manggarai
+                  </h4>
+                  <p
+                    class="text-gray-500 dark:text-gray-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Jakarta Selatan
+                  </p>
+                </div>
+              </div>
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+              >
+                AWAS
+              </span>
+            </div>
+            <div
+              class="flex items-center justify-between bg-background-light dark:bg-background-dark rounded-lg p-3 mb-4"
+            >
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Tinggi Muka Air
+                </p>
+                <p
+                  class="text-2xl font-bold text-red-600 dark:text-red-400 font-mono tracking-tight"
+                >
+                  960
+                  <span
+                    class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                    >cm</span
+                  >
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Update Terakhir
+                </p>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  10:45 WIB
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button
+                class="flex-1 bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
+              >
+                <span class="material-symbols-outlined text-lg"
+                  >edit_document</span
+                >
+                Lapor
+              </button>
+            </div>
+          </article>
+          <!-- Card 2: Warning (Siaga) -->
+          <article
+            class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-l-orange-500 border-t border-r border-b border-gray-100 dark:border-gray-800 transition-all hover:shadow-md"
+          >
+            <div class="flex justify-between items-start mb-3">
+              <div class="flex gap-3">
+                <div
+                  class="size-12 rounded-lg bg-gray-100 dark:bg-gray-800 bg-cover bg-center shrink-0"
+                  data-alt="River flow at Karet water gate"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCl5zylwvcsjDGOeIZu48WazmeFDv53-E_29nVxVGXDzOj5twcrf3Any3EOOtvFffdmTJAvDlEy970OhUvoZVLvvEP9bjBL49Nv7Z7gunpqvkUSNsU3fnSQY8_6XXDD_EwpEIsHWr14k2DtvlGJKlyKfTt8MchdhPgp5XdbocNo64pfySMbrKFzZYas1-TtOv5P4DVchqyO_payupRa0QSqcJAhgwqo9n_qp6hD3T-30H8emOBLlUiBSL2DzGl6gNpV_LwfMz_hG1U8');
+                  "
+                ></div>
+                <div>
+                  <h4
+                    class="text-gray-900 dark:text-white font-bold text-base leading-tight"
+                  >
+                    Pos Pantau Karet
+                  </h4>
+                  <p
+                    class="text-gray-500 dark:text-gray-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Jakarta Pusat
+                  </p>
+                </div>
+              </div>
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300"
+              >
+                SIAGA
+              </span>
+            </div>
+            <div
+              class="flex items-center justify-between bg-background-light dark:bg-background-dark rounded-lg p-3 mb-4"
+            >
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Tinggi Muka Air
+                </p>
+                <p
+                  class="text-2xl font-bold text-orange-600 dark:text-orange-400 font-mono tracking-tight"
+                >
+                  550
+                  <span
+                    class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                    >cm</span
+                  >
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Update Terakhir
+                </p>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  10:40 WIB
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button
+                class="flex-1 bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
+              >
+                <span class="material-symbols-outlined text-lg"
+                  >edit_document</span
+                >
+                Lapor
+              </button>
+            </div>
+          </article>
+          <!-- Card 3: Normal -->
+          <article
+            class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-l-green-500 border-t border-r border-b border-gray-100 dark:border-gray-800 transition-all hover:shadow-md"
+          >
+            <div class="flex justify-between items-start mb-3">
+              <div class="flex gap-3">
+                <div
+                  class="size-12 rounded-lg bg-gray-100 dark:bg-gray-800 bg-cover bg-center shrink-0"
+                  data-alt="Calm water surface at Katulampa"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCccbgyQZ_WKfOvvI83pq7Jpxd6yDjO1icS4lHAqngNRpGCff1fe4UTEQKFgPbEcbscx-e3YBIeS7reK9r2ow-Toi2AZpoeZyzVHOmD9uihuZLDQJLSI_PpxiQ0-0B0JxHGnMtHLt_pdsO9pHgmbyteDcXxG29qIKUgl2H-FLXTMWMp7B5PNvkms708feyj0pRyzkkGhxxKGTWrAteEhEyu92rtAawyu12AVrRfYmX6LLOTE2smFtbIHtqQjrrabJg68-4rlQWO7JNj');
+                  "
+                ></div>
+                <div>
+                  <h4
+                    class="text-gray-900 dark:text-white font-bold text-base leading-tight"
+                  >
+                    Bendung Katulampa
+                  </h4>
+                  <p
+                    class="text-gray-500 dark:text-gray-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Bogor
+                  </p>
+                </div>
+              </div>
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+              >
+                NORMAL
+              </span>
+            </div>
+            <div
+              class="flex items-center justify-between bg-background-light dark:bg-background-dark rounded-lg p-3 mb-4"
+            >
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Tinggi Muka Air
+                </p>
+                <p
+                  class="text-2xl font-bold text-green-600 dark:text-green-400 font-mono tracking-tight"
+                >
+                  40
+                  <span
+                    class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                    >cm</span
+                  >
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Update Terakhir
+                </p>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  10:30 WIB
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button
+                class="flex-1 bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
+              >
+                <span class="material-symbols-outlined text-lg"
+                  >edit_document</span
+                >
+                Lapor
+              </button>
+            </div>
+          </article>
+          <!-- Card 4: Normal -->
+          <article
+            class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-l-green-500 border-t border-r border-b border-gray-100 dark:border-gray-800 transition-all hover:shadow-md"
+          >
+            <div class="flex justify-between items-start mb-3">
+              <div class="flex gap-3">
+                <div
+                  class="size-12 rounded-lg bg-gray-100 dark:bg-gray-800 bg-cover bg-center shrink-0"
+                  data-alt="River view in Depok area"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSIiC4R7KV_QIDtnvZxtFWKH_Ic5yFUFnCxm6QTLe0GQxRP-ylDD8GSstLvQad9Ntc431Jypd1Dju3VIKpZJ6MakrsZ8BIZVGlMfidVHSCDsY_bpGQJVgL_OZfLdc-idxHWPnxIQYgM5cwu5j8nIKqDPy_-Z-aK1p_MAWUqBQxTAWj-sWz4Jf31hOIbor5zBkkKvUFcObY6zwwbjp47rbkmWss13edlQmbOIvaFvrcqrFlan5r15R4vEctfbZiFswNH_toTZ54imAU');
+                  "
+                ></div>
+                <div>
+                  <h4
+                    class="text-gray-900 dark:text-white font-bold text-base leading-tight"
+                  >
+                    Pos Pantau Depok
+                  </h4>
+                  <p
+                    class="text-gray-500 dark:text-gray-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Depok
+                  </p>
+                </div>
+              </div>
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+              >
+                NORMAL
+              </span>
+            </div>
+            <div
+              class="flex items-center justify-between bg-background-light dark:bg-background-dark rounded-lg p-3 mb-4"
+            >
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Tinggi Muka Air
+                </p>
+                <p
+                  class="text-2xl font-bold text-green-600 dark:text-green-400 font-mono tracking-tight"
+                >
+                  120
+                  <span
+                    class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                    >cm</span
+                  >
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Update Terakhir
+                </p>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  10:35 WIB
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button
+                class="flex-1 bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
+              >
+                <span class="material-symbols-outlined text-lg"
+                  >edit_document</span
+                >
+                Lapor
+              </button>
+            </div>
+          </article>
+        </section>
+      </form>
+      <!-- Spacer for FAB and Navigation -->
+      <div class="h-24"></div>
+    </main>
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 w-full bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 pb-safe pt-2 px-6 z-50 rounded-t-2xl shadow-lg"
+    >
+      <div class="flex justify-between items-center h-16">
+        <a class="flex flex-col items-center gap-1 w-16 text-primary" href="#">
+          <span class="material-symbols-outlined filled">home</span>
+          <span class="text-[10px] font-medium">Beranda</span>
+        </a>
+        <a
+          class="flex flex-col items-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          href="#"
+        >
+          <span class="material-symbols-outlined">map</span>
+          <span class="text-[10px] font-medium">Peta</span>
+        </a>
+        <a
+          class="flex flex-col items-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          href="riwayat_laporan.html"
+        >
+          <span class="material-symbols-outlined">history</span>
+          <span class="text-[10px] font-medium">Riwayat</span>
+        </a>
+        <a
+          class="flex flex-col items-center gap-1 w-16 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          href="profil.html"
+        >
+          <span class="material-symbols-outlined">person</span>
+          <span class="text-[10px] font-medium">Profil</span>
+        </a>
+      </div>
+    </nav>
+    <!-- Safe area padding for iPhone home indicator -->
+    <style>
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+      }
+    </style>
+  </body>
+</html>

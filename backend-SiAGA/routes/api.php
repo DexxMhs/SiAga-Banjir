@@ -1,15 +1,19 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\OfficerManagementController;
 use App\Http\Controllers\Api\Admin\PublicReportAdminController;
 use App\Http\Controllers\Api\Admin\RegionController;
 use App\Http\Controllers\Api\Admin\ReportValidationController;
 use App\Http\Controllers\Api\Admin\StationController;
+use App\Http\Controllers\Api\Officer\DashboardController as OfficerDashboardController;
+use App\Http\Controllers\Api\Public\DashboardController as PublicDashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Officer\OfficerReportController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\Public\PublicReportController;
 use App\Http\Controllers\Api\Public\PublicStationController;
 
@@ -42,6 +46,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Memperbarui token notif
     Route::post('/user/update-token', [AuthController::class, 'updateToken']); //tested
 
+    // === Profile Management (Semua Role) ===
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::put('/profile/password', [ProfileController::class, 'changePassword']);
+    Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto']);
+
     // Endpoint Terbuka (Bisa dilihat tanpa login untuk beberapa info dasar)
     Route::get('/stations', [PublicStationController::class, 'index']); //tested
     Route::get('/stations/{id}', [PublicStationController::class, 'show']); //tested
@@ -49,13 +59,27 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Endpoint Khusus Warga Terdaftar (Membutuhkan Login)
     Route::middleware(['auth:sanctum', 'role:public'])->group(function () {
+        // Dashboard User/Masyarakat
+        Route::get('/public/dashboard', [PublicDashboardController::class, 'index']);
+        
+        // Laporan
         Route::post('/public/report', [PublicReportController::class, 'store']); //tested
+        Route::get('/public/reports/history', [PublicDashboardController::class, 'reportHistory']);
+        Route::get('/public/reports/{id}', [PublicDashboardController::class, 'reportDetail']);
         Route::get('/public/area-status', [PublicReportController::class, 'areaStatus']); //tested
         Route::post('/public/emergency-report', [PublicReportController::class, 'emergency']); //tested
+        
+        // Notifikasi
+        Route::get('/public/notifications', [PublicDashboardController::class, 'notifications']);
+        Route::put('/public/notifications/{id}/read', [PublicDashboardController::class, 'markAsRead']);
+        Route::post('/public/notifications/read-all', [PublicDashboardController::class, 'markAllAsRead']);
     });
 
     // Group khusus Petugas
     Route::middleware(['role:petugas'])->group(function () {
+        // Dashboard Petugas
+        Route::get('/officer/dashboard', [OfficerDashboardController::class, 'index']);
+        
         // Ambil daftar stasiun yang ditugaskan ke petugas
         Route::get('/officer/stations', [OfficerReportController::class, 'getStations']); //tested
 
@@ -67,6 +91,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Group khusus Admin
     Route::middleware(['role:admin'])->group(function () {
+        // Dashboard Admin
+        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+        Route::get('/admin/dashboard/flood-potential', [AdminDashboardController::class, 'floodPotential']);
+        Route::get('/admin/dashboard/report-recap', [AdminDashboardController::class, 'reportRecap']);
+        
         // Admin - Stations
         Route::get('/admin/stations', [StationController::class, 'index']); //tested
         Route::post('/admin/stations', [StationController::class, 'store']); //tested
