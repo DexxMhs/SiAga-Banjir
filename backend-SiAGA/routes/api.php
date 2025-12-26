@@ -61,14 +61,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['auth:sanctum', 'role:public'])->group(function () {
         // Dashboard User/Masyarakat
         Route::get('/public/dashboard', [PublicDashboardController::class, 'index']);
-        
+
         // Laporan
         Route::post('/public/report', [PublicReportController::class, 'store']); //tested
         Route::get('/public/reports/history', [PublicDashboardController::class, 'reportHistory']);
         Route::get('/public/reports/{id}', [PublicDashboardController::class, 'reportDetail']);
         Route::get('/public/area-status', [PublicReportController::class, 'areaStatus']); //tested
         Route::post('/public/emergency-report', [PublicReportController::class, 'emergency']); //tested
-        
+
         // Notifikasi
         Route::get('/public/notifications', [PublicDashboardController::class, 'notifications']);
         Route::put('/public/notifications/{id}/read', [PublicDashboardController::class, 'markAsRead']);
@@ -79,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['role:petugas'])->group(function () {
         // Dashboard Petugas
         Route::get('/officer/dashboard', [OfficerDashboardController::class, 'index']);
-        
+
         // Ambil daftar stasiun yang ditugaskan ke petugas
         Route::get('/officer/stations', [OfficerReportController::class, 'getStations']); //tested
 
@@ -95,7 +95,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
         Route::get('/admin/dashboard/flood-potential', [AdminDashboardController::class, 'floodPotential']);
         Route::get('/admin/dashboard/report-recap', [AdminDashboardController::class, 'reportRecap']);
-        
+
         // Admin - Stations
         Route::get('/admin/stations', [StationController::class, 'index']); //tested
         Route::post('/admin/stations', [StationController::class, 'store']); //tested
