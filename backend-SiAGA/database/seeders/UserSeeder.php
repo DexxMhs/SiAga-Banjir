@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'petugas1@example.com',
             'username' => 'petugas',
             'password' => bcrypt('password123'),
+            'nomor_induk' => 'PTG-20251228-001',
             'role' => 'petugas',
         ]);
 

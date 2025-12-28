@@ -5,35 +5,6 @@
     <span class="text-sm font-medium text-slate-900 dark:text-white">Manajemen Petugas</span>
 @endsection
 
-@section('script')
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#607afb",
-                        "background-light": "#f5f6f8",
-                        "background-dark": "#0f1323",
-                        "surface-dark": "#1a1f36",
-                        "surface-dark-lighter": "#242a45",
-                    },
-                    fontFamily: {
-                        display: ["Public Sans", "sans-serif"],
-                        sans: ["Public Sans", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        lg: "0.5rem",
-                        xl: "0.75rem",
-                        full: "9999px",
-                    },
-                },
-            },
-        };
-    </script>
-@endsection
-
 @section('content')
 
     <body
@@ -59,11 +30,11 @@
                                     aktivitas.
                                 </p>
                             </div>
-                            <button
+                            <a href="{{ route('officers.create') }}"
                                 class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
                                 <span class="material-symbols-outlined text-[20px]">add</span>
                                 <span>Tambah Petugas</span>
-                            </button>
+                            </a>
                         </div>
                         <!-- Stats Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -99,7 +70,7 @@
                             </div>
                         </div>
                         <!-- Filters and Search -->
-                        <form action="{{ route('officer.index') }}" method="GET"
+                        <form action="{{ route('officers.index') }}" method="GET"
                             class="bg-surface-dark border border-slate-800 rounded-t-xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
 
                             <!-- SearchBar -->
@@ -153,16 +124,25 @@
                                             <tr class="bg-surface-dark hover:bg-slate-800/50 transition-colors">
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center gap-4">
-                                                        <div
-                                                            class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg shrink-0">
-                                                            {{ strtoupper(substr($officer->name, 0, 2)) }}
-                                                        </div>
+                                                        {{-- LOGIKA FOTO PROFIL --}}
+                                                        @if ($officer->photo)
+                                                            {{-- TAMPILKAN FOTO JIKA ADA --}}
+                                                            <img src="{{ asset('storage/' . $officer->photo) }}"
+                                                                alt="{{ $officer->name }}"
+                                                                class="h-10 w-10 rounded-full object-cover border border-slate-600 shrink-0">
+                                                        @else
+                                                            {{-- TAMPILKAN INISIAL JIKA FOTO KOSONG (Fallback) --}}
+                                                            <div
+                                                                class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg shrink-0">
+                                                                {{ strtoupper(substr($officer->name, 0, 2)) }}
+                                                            </div>
+                                                        @endif
                                                         <div>
                                                             <div class="text-base font-medium text-white">
                                                                 {{ $officer->name }}
                                                             </div>
                                                             <div class="text-xs text-slate-500">
-                                                                ID: {{ $officer->id }}
+                                                                ID: {{ $officer->nomor_induk }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -190,17 +170,27 @@
                                                 </td>
                                                 <td class="px-6 py-4 text-right whitespace-nowrap">
                                                     <div class="flex items-center justify-end gap-2">
-                                                        <button
+                                                        <a href="{{ route('officers.edit', $officer->id) }}"
                                                             class="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                                                             title="Edit">
                                                             <span class="material-symbols-outlined text-[20px]">edit</span>
-                                                        </button>
-                                                        <button
+                                                        </a>
+
+                                                        {{-- Tombol Delete dengan OnClick --}}
+                                                        <button type="button" onclick="confirmDelete({{ $officer->id }})"
                                                             class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                                                             title="Hapus">
                                                             <span
                                                                 class="material-symbols-outlined text-[20px]">delete</span>
                                                         </button>
+
+                                                        {{-- Form Delete Tersembunyi --}}
+                                                        <form id="delete-form-{{ $officer->id }}"
+                                                            action="{{ route('officers.destroy', $officer->id) }}"
+                                                            method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -253,4 +243,58 @@
             </main>
         </div>
     </body>
+@endsection
+
+@section('script')
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#607afb",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1323",
+                        "surface-dark": "#1a1f36",
+                        "surface-dark-lighter": "#242a45",
+                    },
+                    fontFamily: {
+                        display: ["Public Sans", "sans-serif"],
+                        sans: ["Public Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Fungsi untuk konfirmasi hapus
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data petugas ini akan dihapus permanen!",
+                icon: 'warning',
+                background: '#1a1f36', // Sesuaikan dengan warna surface-dark Anda
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444', // Warna Merah (Tailwind red-500)
+                cancelButtonColor: '#6b7280', // Warna Abu (Tailwind gray-500)
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit form penghapusan
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
 @endsection

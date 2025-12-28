@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'petugas', 'public'])->default('public');
+            $table->string('nomor_induk')->nullable();
             $table->foreignId('region_id')->nullable()->constrained('regions');
             $table->string('notification_token')->nullable();
             $table->rememberToken();

@@ -18,6 +18,6 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::resource('/station', StationController::class);
     Route::get('/stations/export', [StationController::class, 'export'])->name('stations.export');
 
-    Route::resource('/officer', OfficerController::class);
+    Route::resource('/officers', OfficerController::class);
     Route::resource('/region', RegionController::class);
 });

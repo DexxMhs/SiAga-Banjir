@@ -25,6 +25,7 @@ class User extends Authenticatable
         'username',
         'password',
         'role',                // admin, petugas, public
+        'nomor_induk',
         'region_id',           // Relasi ke tabel regions [cite: 55]
         'notification_token',  // Untuk push notification [cite: 44]
         'photo',               // Foto profil user
@@ -89,8 +90,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Station::class, 'station_user');
     }
 
-    public function getImageUrlAttribute()
+    // Opsional: Accessor untuk URL foto agar mudah dipanggil di Blade
+    public function getPhotoUrlAttribute()
     {
-        return $this->photo ? asset('storage/' . $this->photo) : asset('images/default.png');
+        if ($this->photo && \Illuminate\Support\Facades\Storage::exists('public/' . $this->photo)) {
+            return asset('storage/' . $this->photo);
+        }
+        // Ganti URL ini dengan URL default avatar Anda
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 }

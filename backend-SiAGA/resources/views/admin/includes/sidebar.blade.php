@@ -27,8 +27,8 @@
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">location_on</span>
             <span class="text-sm font-medium">Manajemen Pos Pantau</span>
         </a>
-        <a class="@if (Request::segment(1) == 'officer') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
-            href="{{ route('officer.index') }}">
+        <a class="@if (Request::segment(1) == 'officers') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
+            href="{{ route('officers.index') }}">
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
             <span class="text-sm font-medium">Manajemen Petugas</span>
         </a>
