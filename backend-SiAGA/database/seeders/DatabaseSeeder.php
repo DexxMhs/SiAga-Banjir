@@ -17,8 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             NotificationSettingRuleSeeder::class,
-            StationSeeder::class,
-            RegionSeeder::class,
+            FloodMonitoringSeeder::class,
             UserSeeder::class,
         ]);
     }

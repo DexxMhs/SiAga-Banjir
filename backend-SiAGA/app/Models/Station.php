@@ -36,4 +36,11 @@ class Station extends Model
         // Stasiun memiliki banyak petugas
         return $this->belongsToMany(User::class, 'station_user');
     }
+
+    public function impactedRegions()
+    {
+        return $this->belongsToMany(Region::class)
+            ->withPivot('impact_percentage', 'travel_time_minutes')
+            ->withTimestamps();
+    }
 }

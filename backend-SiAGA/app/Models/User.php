@@ -88,4 +88,9 @@ class User extends Authenticatable
         // Petugas memiliki banyak stasiun yang ditugaskan
         return $this->belongsToMany(Station::class, 'station_user');
     }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->photo ? asset('storage/' . $this->photo) : asset('images/default.png');
+    }
 }

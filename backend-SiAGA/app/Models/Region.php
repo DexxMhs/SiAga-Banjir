@@ -10,8 +10,12 @@ class Region extends Model
 {
     protected $fillable = [
         'name',
+        'photo',          // Baru
+        'location',       // Baru
+        'latitude',       // Baru
+        'longitude',      // Baru
         'flood_status',
-        'influenced_by_station_id'
+        'risk_note',      // Baru
     ];
 
     // Setiap wilayah dipengaruhi oleh satu stasiun [cite: 59]
@@ -24,5 +28,22 @@ class Region extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    public function relatedStations()
+    {
+        return $this->belongsToMany(Station::class)
+            ->withPivot('impact_percentage', 'travel_time_minutes')
+            ->withTimestamps();
+    }
+
+    // Helper untuk cek status tertinggi dari semua stasiun terkait
+    public function getWorstStatusAttribute()
+    {
+        $statuses = $this->relatedStations->pluck('status')->toArray();
+
+        if (in_array('awas', $statuses)) return 'awas';
+        if (in_array('siaga', $statuses)) return 'siaga';
+        return 'normal';
     }
 }

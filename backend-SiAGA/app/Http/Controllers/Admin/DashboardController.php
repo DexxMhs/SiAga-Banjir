@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\OfficerReport;
@@ -57,27 +57,28 @@ class DashboardController extends Controller
             ->orderBy('date')
             ->get();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'summary' => [
-                    'total_stations' => $totalStations,
-                    'total_officers' => $totalOfficers,
-                    'total_public_users' => $totalPublicUsers,
-                    'pending_officer_reports' => $pendingOfficerReports,
-                    'pending_public_reports' => $pendingPublicReports,
-                    'emergency_reports' => $emergencyReports,
-                ],
-                'station_status' => [
-                    'normal' => $stationsByStatus['normal'] ?? 0,
-                    'siaga' => $stationsByStatus['siaga'] ?? 0,
-                    'awas' => $stationsByStatus['awas'] ?? 0,
-                ],
-                'recent_officer_reports' => $recentOfficerReports,
-                'recent_public_reports' => $recentPublicReports,
-                'report_trend' => $reportTrend,
-            ]
-        ]);
+        return view('admin.pages.dashboard');
+        // return response()->json([
+        //     'status' => 'success',
+        //     'data' => [
+        //         'summary' => [
+        //             'total_stations' => $totalStations,
+        //             'total_officers' => $totalOfficers,
+        //             'total_public_users' => $totalPublicUsers,
+        //             'pending_officer_reports' => $pendingOfficerReports,
+        //             'pending_public_reports' => $pendingPublicReports,
+        //             'emergency_reports' => $emergencyReports,
+        //         ],
+        //         'station_status' => [
+        //             'normal' => $stationsByStatus['normal'] ?? 0,
+        //             'siaga' => $stationsByStatus['siaga'] ?? 0,
+        //             'awas' => $stationsByStatus['awas'] ?? 0,
+        //         ],
+        //         'recent_officer_reports' => $recentOfficerReports,
+        //         'recent_public_reports' => $recentPublicReports,
+        //         'report_trend' => $reportTrend,
+        //     ]
+        // ]);
     }
 
     /**

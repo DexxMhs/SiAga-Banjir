@@ -12,10 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('regions', function (Blueprint $table) {
-            $table->id(); // [cite: 56]
-            $table->string('name'); // [cite: 57]
-            $table->enum('flood_status', ['normal', 'siaga', 'awas'])->default('normal'); //
-            $table->foreignId('influenced_by_station_id')->constrained('stations')->onDelete('cascade'); //
+            $table->id();
+            $table->string('name');
+
+            // Kolom Baru Tambahan
+            $table->string('photo')->nullable(); // Foto wilayah
+            $table->string('location')->nullable(); // Nama jalan/lokasi rinci
+            $table->decimal('latitude', 10, 8)->nullable(); // Koordinat Lat
+            $table->decimal('longitude', 11, 8)->nullable(); // Koordinat Long
+
+            $table->enum('flood_status', ['normal', 'siaga', 'awas'])->default('normal');
+
+            // Catatan risiko
+            $table->text('risk_note')->nullable();
+
             $table->timestamps();
         });
     }
