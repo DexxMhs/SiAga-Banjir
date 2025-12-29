@@ -121,13 +121,25 @@
                                 </span>
                             </p>
                         </div>
+
                         <div class="flex gap-2">
-                            <a href="{{ route('officer-reports.print', $report->id) }}" target="_blank"
-                                class="flex items-center gap-2 rounded-lg border border-gray-200 dark:border-[#1d293d] bg-white dark:bg-surface-dark px-4 py-2 text-sm font-medium text-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-[#242a45] transition-colors">
-                                <span class="material-symbols-outlined text-sm">print</span>
-                                Cetak PDF
-                            </a>
+                            <div class="flex gap-2">
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ $report->station->latitude }},{{ $report->station->longitude }}"
+                                    target="_blank"
+                                    class="flex items-center gap-2 rounded-lg border border-gray-200 dark:border-[#1d293d] bg-white dark:bg-surface-dark px-4 py-2 text-sm font-medium text-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-[#242a45] transition-colors shadow-sm">
+                                    <span class="material-symbols-outlined text-red-500 text-[20px]">map</span>
+                                    Lihat di Peta
+                                </a>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="{{ route('officer-reports.print', $report->id) }}" target="_blank"
+                                    class="flex items-center gap-2 rounded-lg border border-gray-200 dark:border-[#1d293d] bg-white dark:bg-surface-dark px-4 py-2 text-sm font-medium text-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-[#242a45] transition-colors">
+                                    <span class="material-symbols-outlined text-sm">print</span>
+                                    Cetak PDF
+                                </a>
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
