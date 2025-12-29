@@ -19,12 +19,6 @@ class Station extends Model
         'last_update'
     ];
 
-    // Relasi ke wilayah yang dipengaruhi oleh stasiun ini [cite: 59]
-    public function regions(): HasMany
-    {
-        return $this->hasMany(Region::class, 'influenced_by_station_id');
-    }
-
     // Relasi ke histori laporan petugas [cite: 63]
     public function officerReports(): HasMany
     {

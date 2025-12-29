@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 
 class Region extends Model
 {
+    use Notifiable;
     protected $fillable = [
         'name',
         'photo',          // Baru
@@ -45,5 +47,10 @@ class Region extends Model
         if (in_array('awas', $statuses)) return 'awas';
         if (in_array('siaga', $statuses)) return 'siaga';
         return 'normal';
+    }
+
+    public function routeNotificationForFcm()
+    {
+        return null;
     }
 }

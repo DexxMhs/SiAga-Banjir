@@ -15,6 +15,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
+            'email' => 'required|email|unique:users,email|max:100',
             'username' => 'required|string|unique:users,username|max:50',
             'password' => 'required|string|min:8|confirmed',
             'region_id' => 'required|exists:regions,id', // Wajib pilih wilayah

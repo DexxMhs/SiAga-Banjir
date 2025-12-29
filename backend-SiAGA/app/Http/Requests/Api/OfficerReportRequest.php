@@ -17,7 +17,7 @@ class OfficerReportRequest extends FormRequest
         return [
             'station_id'        => 'required|exists:stations,id',
             'water_level'       => 'required|numeric',
-            'rainfall'          => 'required|numeric',
+            'rainfall'          => 'required|string',
             'pump_status'       => 'required|string',
             'photo'             => 'required|image|mimes:jpeg,png,jpg|max:5120',
             'note'              => 'nullable|string',

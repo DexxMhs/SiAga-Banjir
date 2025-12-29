@@ -18,6 +18,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $validated['name'],
+            'email' => $validated['email'],
             'username' => $validated['username'],
             'password' => Hash::make($validated['password']),
             'role' => 'public', // Default pendaftaran via app adalah public
@@ -48,11 +49,11 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        $user = User::where('username', $validated['username'])->first();
+        $user = User::where('email', $validated['email'])->first();
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
-                'message' => 'Username atau password salah'
+                'message' => 'Email atau password salah'
             ], 401);
         }
 

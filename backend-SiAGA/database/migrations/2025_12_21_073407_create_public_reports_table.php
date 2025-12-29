@@ -13,11 +13,20 @@ return new class extends Migration
     {
         Schema::create('public_reports', function (Blueprint $table) {
             $table->id();
+            $table->string('report_code')->unique();
             $table->foreignId('user_id')->constrained('users');
             $table->string('location');
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
+            $table->decimal('water_level', 8, 2);
             $table->string('photo')->nullable();
-            $table->decimal('water_height', 8, 2);
+            $table->text('note')->nullable();
+            $table->text('admin_note')->nullable();
+
+            // Alur Validasi Admin
             $table->enum('status', ['pending', 'diproses', 'selesai', 'emergency'])->default('pending');
+            $table->foreignId('validated_by')->nullable()->constrained('users');
+
             $table->timestamps();
         });
     }

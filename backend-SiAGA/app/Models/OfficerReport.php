@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class OfficerReport extends Model
 {
     protected $fillable = [
+        'report_code',
         'officer_id',
         'station_id',
         'water_level',

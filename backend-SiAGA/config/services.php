@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'fcm' => [
+        'key' => env('GOOGLE_APPLICATION_CREDENTIALS'),
+    ],
+
 ];

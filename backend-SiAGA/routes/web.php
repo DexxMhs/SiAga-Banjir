@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OfficerController;
+use App\Http\Controllers\Admin\OfficerReportController;
 use App\Http\Controllers\Admin\StationController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Auth\AuthController;
@@ -19,5 +20,10 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('/stations/export', [StationController::class, 'export'])->name('stations.export');
 
     Route::resource('/officers', OfficerController::class);
+
     Route::resource('/region', RegionController::class);
+
+    Route::get('officer-reports/export', [OfficerReportController::class, 'export'])->name('officer-reports.export');
+    Route::resource('/officer-reports', OfficerReportController::class);
+    Route::get('officer-reports/{id}/print', [OfficerReportController::class, 'print'])->name('officer-reports.print');
 });

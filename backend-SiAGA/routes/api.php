@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Officer\OfficerReportController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\Public\DisasterFacilityController;
 use App\Http\Controllers\Api\Public\PublicReportController;
 use App\Http\Controllers\Api\Public\PublicStationController;
 
@@ -61,6 +62,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['auth:sanctum', 'role:public'])->group(function () {
         // Dashboard User/Masyarakat
         Route::get('/public/dashboard', [PublicDashboardController::class, 'index']);
+
+        // Fasilitas Bencana
+        Route::get('/facilities', [DisasterFacilityController::class, 'index']);
+        Route::get('/facilities/{id}', [DisasterFacilityController::class, 'show']);
 
         // Laporan
         Route::post('/public/report', [PublicReportController::class, 'store']); //tested
