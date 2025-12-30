@@ -5,33 +5,6 @@
     <span class="text-sm font-medium text-slate-900 dark:text-white">Manajemen Pos Pantau</span>
 @endsection
 
-@section('script')
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#607afb",
-                        "background-light": "#f5f6f8",
-                        "background-dark": "#0f1323",
-                        "surface-dark": "#1a1f36",
-                        "surface-light": "#ffffff",
-                    },
-                    fontFamily: {
-                        display: ["Public Sans", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        lg: "0.5rem",
-                        xl: "0.75rem",
-                        full: "9999px",
-                    },
-                },
-            },
-        };
-    </script>
-@endsection
 
 @section('css')
     <style>
@@ -91,7 +64,7 @@
                             class="flex flex-col flex-wrap gap-4 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-[#1a1f36] md:flex-row md:items-center md:justify-between">
                             <!-- Search & Filters -->
                             <div class="flex flex-1 flex-col gap-3 md:flex-row md:items-center">
-                                <form action="{{ route('station.index') }}" method="GET"
+                                <form action="{{ route('stations.index') }}" method="GET"
                                     class="flex flex-col md:flex-row gap-3 w-full">
 
                                     <div class="relative w-full md:w-80">
@@ -131,11 +104,11 @@
                                     <span class="material-symbols-outlined text-[20px]">file_download</span>
                                     <span class="hidden sm:inline">Export</span>
                                 </a>
-                                <button
+                                <a href="{{ route('stations.create') }}"
                                     class="flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-primary/40">
                                     <span class="material-symbols-outlined text-[20px]">add</span>
                                     <span>Tambah Pos</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <!-- Data Table -->
@@ -171,7 +144,7 @@
                                                                 {{ $station->name }}
                                                             </p>
                                                             <p class="text-xs text-slate-500 dark:text-[#8e99cc]">
-                                                                ID: {{ $station->id }}
+                                                                ID: {{ $station->station_code }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -230,17 +203,25 @@
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4 text-right">
-                                                    <div
-                                                        class="flex items-center justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                                                        <button
+                                                    <div class="flex items-center justify-end gap-2 transition-opacity">
+                                                        <a href="{{ route('stations.edit', $station->id) }}"
                                                             class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-primary dark:hover:bg-[#2e365e]">
                                                             <span class="material-symbols-outlined text-[20px]">edit</span>
-                                                        </button>
-                                                        <button
-                                                            class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-red-500 dark:hover:bg-[#2e365e]">
+                                                        </a>
+                                                        <button type="button" onclick="confirmDelete({{ $station->id }})"
+                                                            class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                            title="Hapus">
                                                             <span
                                                                 class="material-symbols-outlined text-[20px]">delete</span>
                                                         </button>
+
+                                                        {{-- Form Delete Tersembunyi --}}
+                                                        <form id="delete-form-{{ $station->id }}"
+                                                            action="{{ route('stations.destroy', $station->id) }}"
+                                                            method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -293,4 +274,57 @@
             </main>
         </div>
     </body>
+@endsection
+
+@section('script')
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#607afb",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1323",
+                        "surface-dark": "#1a1f36",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        display: ["Public Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Fungsi untuk konfirmasi hapus
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data station ini akan dihapus permanen!",
+                icon: 'warning',
+                background: '#1a1f36', // Sesuaikan dengan warna surface-dark Anda
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444', // Warna Merah (Tailwind red-500)
+                cancelButtonColor: '#6b7280', // Warna Abu (Tailwind gray-500)
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit form penghapusan
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
 @endsection

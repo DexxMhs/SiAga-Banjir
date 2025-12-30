@@ -24,6 +24,7 @@ class FloodMonitoringSeeder extends Seeder
         // ==========================================
         $stations = [
             [
+                'station_code' => 'ST-202512-001',
                 'name' => 'Bendung Katulampa',
                 'location' => 'Bogor, Jawa Barat',
                 'latitude' => -6.6331,
@@ -31,9 +32,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 120,
                 'status' => 'siaga',
                 'threshold_siaga' => 150,
-                'threshold_awas' => 250
+                'threshold_awas' => 250,
             ],
             [
+                'station_code' => 'ST-202512-002',
                 'name' => 'Pos Pantau Depok',
                 'location' => 'Depok, Jawa Barat',
                 'latitude' => -6.4036,
@@ -41,9 +43,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 150,
                 'status' => 'normal',
                 'threshold_siaga' => 200,
-                'threshold_awas' => 300
+                'threshold_awas' => 300,
             ],
             [
+                'station_code' => 'ST-202512-010',
                 'name' => 'Pintu Air Manggarai',
                 'location' => 'Jakarta Selatan',
                 'latitude' => -6.2082,
@@ -51,9 +54,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 850,
                 'status' => 'awas',
                 'threshold_siaga' => 750,
-                'threshold_awas' => 850
+                'threshold_awas' => 850,
             ],
             [
+                'station_code' => 'ST-202512-003',
                 'name' => 'Pintu Air Karet',
                 'location' => 'Tanah Abang, Jakarta Pusat',
                 'latitude' => -6.1989,
@@ -61,9 +65,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 520,
                 'status' => 'siaga',
                 'threshold_siaga' => 450,
-                'threshold_awas' => 600
+                'threshold_awas' => 600,
             ],
             [
+                'station_code' => 'ST-202512-004',
                 'name' => 'Pos Angke Hulu',
                 'location' => 'Tangerang',
                 'latitude' => -6.2297,
@@ -71,9 +76,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 100,
                 'status' => 'normal',
                 'threshold_siaga' => 150,
-                'threshold_awas' => 250
+                'threshold_awas' => 250,
             ],
             [
+                'station_code' => 'ST-202512-005',
                 'name' => 'Pos Pesanggrahan',
                 'location' => 'Jakarta Selatan',
                 'latitude' => -6.2778,
@@ -81,9 +87,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 90,
                 'status' => 'normal',
                 'threshold_siaga' => 150,
-                'threshold_awas' => 250
+                'threshold_awas' => 250,
             ],
             [
+                'station_code' => 'ST-202512-006',
                 'name' => 'Pos Sunter Hulu',
                 'location' => 'Jakarta Timur',
                 'latitude' => -6.3094,
@@ -91,9 +98,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 180,
                 'status' => 'siaga',
                 'threshold_siaga' => 150,
-                'threshold_awas' => 200
+                'threshold_awas' => 200,
             ],
             [
+                'station_code' => 'ST-202512-007',
                 'name' => 'Pintu Air Pulo Gadung',
                 'location' => 'Jakarta Timur',
                 'latitude' => -6.1878,
@@ -101,9 +109,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 450,
                 'status' => 'normal',
                 'threshold_siaga' => 550,
-                'threshold_awas' => 700
+                'threshold_awas' => 700,
             ],
             [
+                'station_code' => 'ST-202512-008',
                 'name' => 'Pasar Ikan (Laut)',
                 'location' => 'Penjaringan, Jakarta Utara',
                 'latitude' => -6.1261,
@@ -111,9 +120,10 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 240,
                 'status' => 'awas',
                 'threshold_siaga' => 170,
-                'threshold_awas' => 220
+                'threshold_awas' => 220,
             ],
             [
+                'station_code' => 'ST-202512-009',
                 'name' => 'Pos Krukut Hulu',
                 'location' => 'Ciganjur, Depok',
                 'latitude' => -6.3533,
@@ -121,12 +131,13 @@ class FloodMonitoringSeeder extends Seeder
                 'water_level' => 110,
                 'status' => 'normal',
                 'threshold_siaga' => 150,
-                'threshold_awas' => 250
+                'threshold_awas' => 250,
             ],
         ];
 
         foreach ($stations as $data) {
             Station::create([
+                'station_code' => $data['station_code'],
                 'name' => $data['name'],
                 'location' => $data['location'],
                 'latitude' => $data['latitude'],

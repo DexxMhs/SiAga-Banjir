@@ -17,7 +17,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::resource('/station', StationController::class);
+    Route::resource('/stations', StationController::class);
     Route::get('/stations/export', [StationController::class, 'export'])->name('stations.export');
 
     Route::resource('/officers', OfficerController::class);

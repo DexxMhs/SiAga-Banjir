@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Station extends Model
 {
     protected $fillable = [
+        'station_code',
         'name',
         'location',
         'latitude',
         'longitude',
         'water_level',
         'status',
+        'operational_status',
+        'description',
         'threshold_siaga',
         'threshold_awas',
         'last_update'
