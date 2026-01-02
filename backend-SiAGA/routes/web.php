@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PublicReportController;
 use App\Http\Controllers\Admin\StationController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\CitizenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -31,4 +32,6 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('public-reports/export', [PublicReportController::class, 'export'])->name('public-reports.export');
     Route::resource('/public-reports', PublicReportController::class);
     Route::get('public-reports/{id}/print', [PublicReportController::class, 'print'])->name('public-reports.print');
+
+    Route::resource('/citizens', CitizenController::class);
 });
