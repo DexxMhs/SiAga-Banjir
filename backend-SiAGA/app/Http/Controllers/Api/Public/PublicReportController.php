@@ -157,4 +157,22 @@ class PublicReportController extends Controller
             ]
         ]);
     }
+
+    /**
+     * GET /api/public/reports/history
+     * Mengambil riwayat laporan user yang sedang login
+     */
+    public function history()
+    {
+        $user = Auth::user();
+
+        $reports = PublicReport::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $reports
+        ]);
+    }
 }

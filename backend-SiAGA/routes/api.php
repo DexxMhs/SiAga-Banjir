@@ -69,7 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Laporan
         Route::post('/public/report', [PublicReportController::class, 'store']); //tested
-        Route::get('/public/reports/history', [PublicDashboardController::class, 'reportHistory']);
+        Route::get('/public/reports/history', [PublicReportController::class, 'history']);
         Route::get('/public/reports/{id}', [PublicDashboardController::class, 'reportDetail']);
         Route::get('/public/area-status', [PublicReportController::class, 'areaStatus']); //tested
         Route::post('/public/emergency-report', [PublicReportController::class, 'emergency']); //tested

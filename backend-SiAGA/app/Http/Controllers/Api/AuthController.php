@@ -20,6 +20,7 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'username' => $validated['username'],
+            'phone' => $validated['phone'],
             'password' => Hash::make($validated['password']),
             'role' => 'public', // Default pendaftaran via app adalah public
             'region_id' => $validated['region_id'],
@@ -36,6 +37,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'username' => $user->username,
                 'email' => $user->email ?? '',
+                'phone' => $user->phone ?? '',
                 'role' => $user->role,
                 'region_id' => $user->region_id,
                 'photo' => $user->photo ?? '',
@@ -68,6 +70,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'username' => $user->username,
                 'email' => $user->email ?? '',
+                'phone' => $user->phone ?? '',
                 'role' => $user->role, // Penting untuk navigasi di Flutter
                 'region_id' => $user->region_id,
                 'photo' => $user->photo ?? '',

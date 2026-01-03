@@ -196,7 +196,7 @@
                                                 <td class="px-6 py-4">
                                                     <p class="text-slate-700 dark:text-slate-300">
                                                         @if ($station->updated_at->diffInDays(now()) >= 1)
-                                                            {{ $station->updated_at->diffInDays(now()) }} days ago
+                                                            {{ floor($station->updated_at->diffInDays(now())) }} days ago
                                                         @else
                                                             {{ $station->updated_at->diffForHumans() }}
                                                         @endif

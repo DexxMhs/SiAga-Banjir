@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'username',
+        'phone',
         'password',
         'role',                // admin, petugas, public
         'nomor_induk',
