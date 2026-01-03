@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\StationController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\CitizenController;
+use App\Http\Controllers\Admin\DisasterFacilityController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -24,6 +25,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::resource('/officers', OfficerController::class);
 
     Route::resource('/region', RegionController::class);
+
+    Route::resource('/disaster-facilities', DisasterFacilityController::class);
 
     Route::get('officer-reports/export', [OfficerReportController::class, 'export'])->name('officer-reports.export');
     Route::resource('/officer-reports', OfficerReportController::class);

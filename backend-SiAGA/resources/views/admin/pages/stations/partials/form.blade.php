@@ -175,9 +175,9 @@
 
         <label class="flex flex-col gap-2 col-span-full">
             <span class="text-sm font-medium text-gray-700 dark:text-white">Keterangan Tambahan</span>
-            <textarea name="description" value="{{ old('description', $station->description ?? ($station ?? '')) }}"
+            <textarea name="description"
                 class="form-input w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-primary dark:border-[#3a3e55] dark:bg-[#111218] dark:text-white dark:placeholder:text-[#9ba0bb] px-4 transition-colors"
-                placeholder="Catatan mengenai kondisi pos, akses jalan, atau kontak penjaga pos" type="text" rows="3"></textarea>
+                placeholder="Catatan mengenai kondisi pos, akses jalan, atau kontak penjaga pos" type="text" rows="3">{{ old('description', $station->description ?? '') }}</textarea>
         </label>
     </div>
 </div>

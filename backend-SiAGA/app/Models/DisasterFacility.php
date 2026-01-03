@@ -36,40 +36,6 @@ class DisasterFacility extends Model
         });
     }
 
-    /**
-     * Logic Pemformatan Kode Unik
-     * Format: [PREFIX]-[TAHUN]-[RANDOM 4 HURUF/ANGKA]
-     * Contoh: PNG-2025-A1B2
-     */
-    public static function generateUniqueCode($type)
-    {
-        // 1. Tentukan Prefix berdasarkan Tipe Fasilitas
-        $prefix = match ($type) {
-            'pengungsian' => 'PNG', // PeNGungsian
-            'dapur_umum' => 'DPR',  // DaPuR
-            'posko_kesehatan' => 'MED', // MEDis
-            'logistik' => 'LOG',    // LOGistik
-            default => 'FAC',       // FACility (Default)
-        };
-
-        // 2. Ambil Tahun Sekarang
-        $year = date('Y');
-
-        // 3. Generate sampai menemukan kode yang belum terpakai (Unik)
-        do {
-            // Random string 4 karakter kapital (angka/huruf)
-            $random = strtoupper(Str::random(4));
-
-            // Gabungkan formatnya
-            $code = "{$prefix}-{$year}-{$random}";
-
-            // Cek database, ulangi jika kebetulan ada yang sama
-        } while (self::where('unique_code', $code)->exists());
-
-        return $code;
-    }
-
-
     public function getPhotoUrlAttribute()
     {
         if ($this->photo_path) {
