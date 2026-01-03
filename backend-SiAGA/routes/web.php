@@ -19,7 +19,7 @@ Route::post('/', [AuthController::class, 'login'])->name('auth.login');
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/stations/export', [StationController::class, 'export'])->name('stations.export');
     Route::resource('/stations', StationController::class);
