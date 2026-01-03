@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\OfficerController;
 use App\Http\Controllers\Admin\OfficerReportController;
 use App\Http\Controllers\Admin\PublicReportController;
 use App\Http\Controllers\Admin\StationController;
-use App\Http\Controllers\Admin\RegionMapController;
+use App\Http\Controllers\Admin\MapController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\CitizenController;
 use App\Http\Controllers\Admin\DisasterFacilityController;
@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     Route::resource('/officers', OfficerController::class);
 
-    Route::get('/region-map', [RegionMapController::class, 'index'])->name('region-map.index');
+    Route::get('/map', [MapController::class, 'index'])->name('map.index');
 
     Route::resource('/disaster-facilities', DisasterFacilityController::class);
 

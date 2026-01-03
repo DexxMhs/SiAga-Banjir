@@ -1,46 +1,11 @@
-<!DOCTYPE html>
+@extends('admin.layouts.app')
 
-<html class="dark" lang="en">
+@section('breadcrumbs')
+    <span class="material-symbols-outlined text-sm text-slate-500">chevron_right</span>
+    <span class="text-sm font-medium text-slate-900 dark:text-white">Rekap Laporan</span>
+@endsection
 
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Rekapitulasi &amp; Laporan - Flood Monitor Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#607afb",
-                        "background-light": "#f5f6f8",
-                        "background-dark": "#0f1323",
-                        "surface-dark": "#1a1f33",
-                        "surface-dark-highlight": "#252b42",
-                        "text-secondary": "#9ba0bb",
-                    },
-                    fontFamily: {
-                        display: ["Public Sans", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        lg: "0.5rem",
-                        xl: "0.75rem",
-                        full: "9999px",
-                    },
-                },
-            },
-        };
-    </script>
+@section('css')
     <style>
         /* Custom scrollbar for better look in dark mode */
         ::-webkit-scrollbar {
@@ -61,109 +26,16 @@
             background: #474f6b;
         }
     </style>
-</head>
+@endsection
 
-<body
-    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-white">
+@section('content')
     <div class="flex h-screen w-full overflow-hidden">
         <!-- Sidebar -->
-        <aside class="flex w-72 flex-col bg-surface-dark border-r border-white/5 h-full flex-shrink-0">
-            <div class="p-6 flex items-center gap-3 border-b border-white/5">
-                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shadow-lg ring-2 ring-white/10"
-                    data-alt="Abstract water wave logo gradient blue"
-                    style="
-              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrN_uUm-V34bidOUL8exBExCemGmuUBSVbtjJiXlO9WWc7MTQsPhAZdv3xXcdYCo6L-0Os-2_cSFa6EJtMKmYwseEN-0a9p2NOTdG9OwEfIBNoBkRIU_Ol60yU8jmADXL2u59qcc62wK6voc9Q-cI08PnbpLcPVBHfZWUO5gz8XyM3lLsndEcH-zoDNn0dI2cHpkIKDqA_BHK0JSC1wwxRKaZmcWekmv11rXXIYDiL0liOm26DlD_8t-DNl_D1mETr_V8MCBezaxPs');
-            ">
-                </div>
-                <div class="flex flex-col">
-                    <h1 class="text-white text-base font-bold leading-none">
-                        Flood Monitor
-                    </h1>
-                    <p class="text-text-secondary text-xs font-normal mt-1">
-                        Admin Panel
-                    </p>
-                </div>
-            </div>
-            <nav class="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-2">
-                <!-- Navigation Items -->
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-white/5 transition-colors group"
-                    href="#">
-                    <span class="material-symbols-outlined group-hover:text-white transition-colors">dashboard</span>
-                    <span class="text-sm font-medium group-hover:text-white transition-colors">Dashboard</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-white/5 transition-colors group"
-                    href="#">
-                    <span class="material-symbols-outlined group-hover:text-white transition-colors">water_lux</span>
-                    <span class="text-sm font-medium group-hover:text-white transition-colors">Manajemen Pos
-                        Pantau</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-white/5 transition-colors group"
-                    href="#">
-                    <span class="material-symbols-outlined group-hover:text-white transition-colors">badge</span>
-                    <span class="text-sm font-medium group-hover:text-white transition-colors">Manajemen Petugas</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-white/5 transition-colors group"
-                    href="#">
-                    <span
-                        class="material-symbols-outlined group-hover:text-white transition-colors">assignment_ind</span>
-                    <span class="text-sm font-medium group-hover:text-white transition-colors">Laporan Petugas</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-white/5 transition-colors group"
-                    href="#">
-                    <span class="material-symbols-outlined group-hover:text-white transition-colors">forum</span>
-                    <span class="text-sm font-medium group-hover:text-white transition-colors">Laporan Masyarakat</span>
-                </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-white/5 transition-colors group"
-                    href="#">
-                    <span class="material-symbols-outlined group-hover:text-white transition-colors">warning</span>
-                    <span class="text-sm font-medium group-hover:text-white transition-colors">Potensi Banjir</span>
-                </a>
-                <!-- Active State -->
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/20"
-                    href="#">
-                    <span class="material-symbols-outlined fill-1">description</span>
-                    <span class="text-sm font-medium">Rekap Laporan</span>
-                </a>
-            </nav>
-            <div class="p-4 border-t border-white/5">
-                <button
-                    class="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-text-secondary hover:text-red-400 hover:bg-red-400/10 transition-colors">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="text-sm font-medium">Log Out</span>
-                </button>
-            </div>
-        </aside>
+        @include('admin.includes.sidebar')
         <!-- Main Content -->
         <main class="flex-1 flex flex-col h-full overflow-hidden relative">
             <!-- Top Header -->
-            <header
-                class="h-16 border-b border-white/5 bg-background-dark/50 backdrop-blur-md flex items-center justify-between px-8 flex-shrink-0 z-10 sticky top-0">
-                <!-- Breadcrumbs -->
-                <nav class="flex items-center gap-2">
-                    <a class="text-text-secondary text-sm font-medium hover:text-white transition-colors"
-                        href="#">Dashboard</a>
-                    <span class="text-text-secondary text-sm">/</span>
-                    <span class="text-white text-sm font-medium">Rekapitulasi &amp; Laporan</span>
-                </nav>
-                <!-- User Profile -->
-                <div class="flex items-center gap-4">
-                    <div class="flex flex-col items-end hidden md:flex">
-                        <span class="text-white text-sm font-medium">Admin Pusat</span>
-                        <span class="text-text-secondary text-xs">admin@floodmonitor.id</span>
-                    </div>
-                    <div class="relative">
-                        <div class="size-10 rounded-full bg-cover bg-center cursor-pointer ring-2 ring-white/10 hover:ring-primary transition-all"
-                            data-alt="Portrait of a user"
-                            style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsRJbKg2Y2O6bNXxnRnFlUEdW15oBlu3jOTC_cFSIMieEXz_bbD5imKLd8AxOnlK9VnZfqxkLEx7an2eX0tphQbC5JE7rkguRFZ2y2KUlr9EMAPO4_tTfycIMvQ2qUxL5Jfk-iKBtYHAHf7XPXiiyXajVomTJ3Jy-cEZeWhp5oZ7P0M86zsSqEWqu50zb-cL47FNGKrjCEviAoji_mr_GX-sb-ihl3fnLsI-s5oeC9X6OSSkAD5aVqX-pM-7J_iMMPkOQ1BsKDCa8S');
-                ">
-                        </div>
-                        <div
-                            class="absolute bottom-0 right-0 size-3 bg-emerald-500 border-2 border-background-dark rounded-full">
-                        </div>
-                    </div>
-                </div>
-            </header>
+            @include('admin.includes.header')
             <!-- Scrollable Content Area -->
             <div class="flex-1 overflow-y-auto p-8">
                 <div class="max-w-[1200px] mx-auto space-y-8 pb-10">
@@ -257,10 +129,8 @@
                     </section>
                     <!-- Stats Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div
-                            class="bg-surface-dark p-5 rounded-xl border border-white/5 relative overflow-hidden group">
-                            <div
-                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <div class="bg-surface-dark p-5 rounded-xl border border-white/5 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <span class="material-symbols-outlined text-6xl text-blue-500">water_drop</span>
                             </div>
                             <p class="text-text-secondary text-sm font-medium mb-1">
@@ -278,10 +148,8 @@
                                 <div class="h-full bg-blue-500 w-3/4 rounded-full"></div>
                             </div>
                         </div>
-                        <div
-                            class="bg-surface-dark p-5 rounded-xl border border-white/5 relative overflow-hidden group">
-                            <div
-                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <div class="bg-surface-dark p-5 rounded-xl border border-white/5 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <span class="material-symbols-outlined text-6xl text-red-500">warning</span>
                             </div>
                             <p class="text-text-secondary text-sm font-medium mb-1">
@@ -299,10 +167,8 @@
                                 <div class="h-full bg-red-500 w-1/4 rounded-full"></div>
                             </div>
                         </div>
-                        <div
-                            class="bg-surface-dark p-5 rounded-xl border border-white/5 relative overflow-hidden group">
-                            <div
-                                class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <div class="bg-surface-dark p-5 rounded-xl border border-white/5 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <span class="material-symbols-outlined text-6xl text-emerald-500">check_circle</span>
                             </div>
                             <p class="text-text-secondary text-sm font-medium mb-1">
@@ -449,8 +315,7 @@
                                     class="w-full bg-background-dark border border-white/10 text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2 pl-9"
                                     placeholder="Cari ID Laporan atau Lokasi..." type="text" />
                                 <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-                                    <span
-                                        class="material-symbols-outlined text-text-secondary text-[18px]">search</span>
+                                    <span class="material-symbols-outlined text-text-secondary text-[18px]">search</span>
                                 </div>
                             </div>
                         </div>
@@ -598,8 +463,7 @@
                                     class="px-3 py-1 text-sm rounded border border-white/10 text-text-secondary hover:text-white hover:bg-white/5 disabled:opacity-50">
                                     Previous
                                 </button>
-                                <button
-                                    class="px-3 py-1 text-sm rounded border border-white/10 text-white bg-white/10">
+                                <button class="px-3 py-1 text-sm rounded border border-white/10 text-white bg-white/10">
                                     1
                                 </button>
                                 <button
@@ -621,6 +485,33 @@
             </div>
         </main>
     </div>
-</body>
+@endsection
 
-</html>
+@section('script')
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#607afb",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1323",
+                        "surface-dark": "#1a1f33",
+                        "surface-dark-highlight": "#252b42",
+                        "text-secondary": "#9ba0bb",
+                    },
+                    fontFamily: {
+                        display: ["Public Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+@endsection
