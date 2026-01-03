@@ -62,8 +62,8 @@
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">thunderstorm</span>
             <span class="text-sm font-medium">Potensi Banjir</span>
         </a>
-        <a class="@if (Request::segment(1) == 'reports') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
-            href="#">
+        <a class="@if (Request::segment(1) == 'recap') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
+            href="{{ route('recap.index') }}">
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
             <span class="text-sm font-medium">Rekap Laporan</span>
         </a>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MapController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\CitizenController;
 use App\Http\Controllers\Admin\DisasterFacilityController;
+use App\Http\Controllers\Admin\RecapController;
 use App\Http\Controllers\Admin\RegionController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,4 +42,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('public-reports/{id}/print', [PublicReportController::class, 'print'])->name('public-reports.print');
 
     Route::resource('/citizens', CitizenController::class);
+
+    Route::get('recap/print', [RecapController::class, 'print'])->name('recap.print');
+    Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
 });
