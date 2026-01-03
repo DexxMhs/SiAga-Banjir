@@ -6,155 +6,174 @@ use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\Station;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Exports\RegionsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RegionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar wilayah.
      */
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $status = $request->input('status'); // filter: normal, siaga, awas
+        $status = $request->input('status');
 
-        // 1. Query Dasar
-        $query = Region::with('relatedStations') // Eager load relasi pivot
-            ->when($search, function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+        $regions = Region::withCount('users') // Hitung jumlah warga
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('location', 'like', "%{$search}%");
             })
-            ->when($status, function ($q) use ($status) {
-                $q->where('flood_status', $status);
-            });
+            ->when($status, function ($query, $status) {
+                return $query->where('flood_status', $status);
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
-        // 2. Data untuk List Sidebar (Paginated)
-        // Kita clone query agar tidak bentrok dengan map data
-        $regions = (clone $query)->latest()->paginate(10)->withQueryString();
-
-        // 3. Data untuk Peta (Semua data, tanpa paginasi)
-        // Kita perlu mapping agar formatnya sesuai dengan JS Leaflet
-        $mapData = (clone $query)->get()->map(function ($region) {
-            return [
-                'id' => $region->id,
-                'name' => $region->name,
-                'lat' => $region->latitude,
-                'lng' => $region->longitude,
-                'status' => $region->flood_status, // Untuk warna marker
-                'note' => $region->risk_note,
-                // Mengambil nama-nama stasiun penyebab banjir
-                'influenced_by' => $region->relatedStations->pluck('name')->join(', '),
-            ];
-        });
-
-        // dd($mapData);
-
-        // 4. Statistik untuk Filter Chips (Hitung jumlah per status)
-        $stats = [
-            'all' => Region::count(),
-            'awas' => Region::where('flood_status', 'awas')->count(),
-            'siaga' => Region::where('flood_status', 'siaga')->count(),
-            'normal' => Region::where('flood_status', 'normal')->count(),
-        ];
-
-        return view('admin.pages.regions.index', compact('regions', 'mapData', 'stats'));
+        return view('admin.pages.regions.index', compact('regions'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Form tambah wilayah baru.
      */
     public function create()
     {
-        // Ambil semua stasiun untuk dipilih di form (Multiselect)
+        // Ambil data stations untuk dihubungkan (Relasi Many-to-Many)
         $stations = Station::all();
+
         return view('admin.pages.regions.create', compact('stations'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan data wilayah baru.
      */
     public function store(Request $request)
     {
+        // 1. Validasi
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'nullable|string|max:255',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'flood_status' => 'required|in:normal,siaga,awas',
-            'risk_note' => 'nullable|string',
-            // Validasi input array stasiun (pivot)
-            'stations' => 'nullable|array',
-            'stations.*' => 'exists:stations,id',
+            'name'         => 'required|string|max:255',
+            'location'     => 'nullable|string|max:255',
+            'latitude'     => 'nullable|numeric',
+            'longitude'    => 'nullable|numeric',
+            // 'flood_status' => 'required|in:normal,siaga,awas',
+            'risk_note'    => 'nullable|string',
+            'photo'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
+            // Validasi Array ID Stations (untuk pivot table)
+            'stations'     => 'nullable|array',
+            'stations.*'   => 'exists:stations,id',
         ]);
 
+        // 2. Upload Foto (Jika ada)
+        if ($request->hasFile('photo')) {
+            $validated['photo'] = $request->file('photo')->store('regions', 'public');
+        }
+
+        // 3. Simpan Data Region
         $region = Region::create($validated);
 
-        // Simpan Relasi Pivot (Stasiun yang mempengaruhi wilayah ini)
+        // 4. Simpan Relasi Stasiun (Many-to-Many)
         if ($request->has('stations')) {
-            // Attach stasiun yang dipilih
             $region->relatedStations()->attach($request->stations);
         }
 
-        return redirect()->route('regions.index')->with('success', 'Wilayah berhasil ditambahkan.');
+        return redirect()->route('regions.index')
+            ->with('success', 'Wilayah berhasil ditambahkan.');
     }
 
     /**
-     * Display the specified resource.
+     * Tampilkan detail wilayah.
      */
     public function show(string $id)
     {
-        $region = Region::with('relatedStations')->findOrFail($id);
+        // Load relasi stations dan users
+        $region = Region::with(['relatedStations', 'users'])->findOrFail($id);
+
         return view('admin.pages.regions.show', compact('region'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Form edit wilayah.
      */
     public function edit(string $id)
     {
         $region = Region::with('relatedStations')->findOrFail($id);
-        $stations = Station::all();
+        $stations = Station::all(); // Untuk pilihan checkbox/select
 
         return view('admin.pages.regions.edit', compact('region', 'stations'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update data wilayah.
      */
     public function update(Request $request, string $id)
     {
         $region = Region::findOrFail($id);
 
+        // 1. Validasi
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'nullable|string|max:255',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'flood_status' => 'required|in:normal,siaga,awas',
-            'risk_note' => 'nullable|string',
-            'stations' => 'nullable|array',
+            'name'         => 'required|string|max:255',
+            'location'     => 'nullable|string|max:255',
+            'latitude'     => 'nullable|numeric',
+            'longitude'    => 'nullable|numeric',
+            // 'flood_status' => 'required|in:normal,siaga,awas',
+            'risk_note'    => 'nullable|string',
+            'photo'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
+            'stations'     => 'nullable|array',
+            'stations.*'   => 'exists:stations,id',
         ]);
 
-        $region->update($validated);
-
-        // Update Relasi Pivot (Sync akan menghapus yang lama dan pasang yang baru)
-        if ($request->has('stations')) {
-            $region->relatedStations()->sync($request->stations);
-        } else {
-            // Jika user uncheck semua stasiun
-            $region->relatedStations()->detach();
+        // 2. Cek Upload Foto Baru
+        if ($request->hasFile('photo')) {
+            // Hapus foto lama jika ada di storage
+            if ($region->photo && Storage::disk('public')->exists($region->photo)) {
+                Storage::disk('public')->delete($region->photo);
+            }
+            // Simpan foto baru
+            $validated['photo'] = $request->file('photo')->store('regions', 'public');
         }
 
-        return redirect()->route('regions.index')->with('success', 'Data wilayah berhasil diperbarui.');
+        // 3. Update Data Region
+        $region->update($validated);
+
+        // 4. Update Relasi Stasiun (Sync)
+        // Sync akan otomatis menghapus yang tidak dicentang dan menambah yang baru
+        $region->relatedStations()->sync($request->input('stations', []));
+
+        return redirect()->route('regions.index')
+            ->with('success', 'Data wilayah berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus wilayah.
      */
     public function destroy(string $id)
     {
         $region = Region::findOrFail($id);
+
+        // 1. Hapus Foto dari Storage
+        if ($region->photo && Storage::disk('public')->exists($region->photo)) {
+            Storage::disk('public')->delete($region->photo);
+        }
+
+        // 2. Hapus Data (Relasi pivot akan terhapus otomatis atau via cascade di database)
         $region->delete();
 
-        return redirect()->route('regions.index')->with('success', 'Wilayah berhasil dihapus.');
+        return redirect()->route('regions.index')
+            ->with('success', 'Wilayah berhasil dihapus.');
+    }
+
+    public function export(Request $request)
+    {
+        $search = $request->input('search');
+        $status = $request->input('status');
+
+        // Nama file dengan timestamp agar unik
+        $fileName = 'laporan-data-wilayah-' . now()->format('Y-m-d_H-i') . '.xlsx';
+
+        return Excel::download(new RegionsExport($search, $status), $fileName);
     }
 }

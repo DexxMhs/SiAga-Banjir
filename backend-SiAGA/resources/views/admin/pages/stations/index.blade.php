@@ -136,8 +136,14 @@
                                                     <div class="flex items-center gap-3">
                                                         <div
                                                             class="flex size-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-500/10">
-                                                            <span
-                                                                class="material-symbols-outlined text-blue-600 dark:text-blue-400">sensors</span>
+                                                            @if ($station->photo)
+                                                                <img src="{{ asset('storage/' . $station->photo) }}"
+                                                                    alt="{{ $station->name }}"
+                                                                    class="h-full w-full object-cover">
+                                                            @else
+                                                                <span
+                                                                    class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">sensors</span>
+                                                            @endif
                                                         </div>
                                                         <div>
                                                             <p class="font-semibold text-slate-900 dark:text-white">
@@ -153,9 +159,18 @@
                                                     <p class="text-slate-700 dark:text-slate-300">
                                                         {{ $station->location }}
                                                     </p>
-                                                    <p class="text-xs text-slate-500 dark:text-[#8e99cc]">
-                                                        {{ $station->latitude }}, {{ $station->longitude }}
-                                                    </p>
+                                                    @if ($station->latitude && $station->longitude)
+                                                        <a href="https://www.google.com/maps/search/?api=1&query={{ $station->latitude }},{{ $station->longitude }}"
+                                                            target="_blank"
+                                                            class="mt-1 flex items-center gap-1 text-xs text-primary hover:underline">
+                                                            <span class="material-symbols-outlined text-[14px]">map</span>
+                                                            {{ number_format($station->latitude, 4) }},
+                                                            {{ number_format($station->longitude, 4) }}
+                                                        </a>
+                                                    @else
+                                                        <span class="text-xs text-slate-400 italic">Koordinat belum
+                                                            diset</span>
+                                                    @endif
                                                 </td>
                                                 <td class="px-6 py-4">
                                                     <span

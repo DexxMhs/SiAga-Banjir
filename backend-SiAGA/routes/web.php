@@ -5,10 +5,11 @@ use App\Http\Controllers\Admin\OfficerController;
 use App\Http\Controllers\Admin\OfficerReportController;
 use App\Http\Controllers\Admin\PublicReportController;
 use App\Http\Controllers\Admin\StationController;
-use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\Admin\RegionMapController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\CitizenController;
 use App\Http\Controllers\Admin\DisasterFacilityController;
+use App\Http\Controllers\Admin\RegionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -19,12 +20,15 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::resource('/stations', StationController::class);
     Route::get('/stations/export', [StationController::class, 'export'])->name('stations.export');
+    Route::resource('/stations', StationController::class);
+
+    Route::get('/regions/export', [RegionController::class, 'export'])->name('regions.export');
+    Route::resource('/regions', RegionController::class);
 
     Route::resource('/officers', OfficerController::class);
 
-    Route::resource('/region', RegionController::class);
+    Route::get('/region-map', [RegionMapController::class, 'index'])->name('region-map.index');
 
     Route::resource('/disaster-facilities', DisasterFacilityController::class);
 

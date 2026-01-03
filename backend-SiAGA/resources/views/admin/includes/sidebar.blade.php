@@ -27,6 +27,11 @@
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">location_on</span>
             <span class="text-sm font-medium">Manajemen Pos Pantau</span>
         </a>
+        <a class="@if (Request::segment(1) == 'regions') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
+            href="{{ route('regions.index') }}">
+            <span class="material-symbols-outlined group-hover:text-primary transition-colors">location_city</span>
+            <span class="text-sm font-medium">Manajemen Wilayah</span>
+        </a>
         <a class="@if (Request::segment(1) == 'disaster-facilities') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
             href="{{ route('disaster-facilities.index') }}">
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">build</span>
@@ -52,8 +57,8 @@
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">warning</span>
             <span class="text-sm font-medium">Laporan Masyarakat</span>
         </a>
-        <a class="@if (Request::segment(1) == 'region') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
-            href="{{ route('region.index') }}">
+        <a class="@if (Request::segment(1) == 'region-map') flex items-center gap-3 px-3 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/30 @else flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 dark:text-[#8e99cc] hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors group @endif"
+            href="{{ route('region-map.index') }}">
             <span class="material-symbols-outlined group-hover:text-primary transition-colors">thunderstorm</span>
             <span class="text-sm font-medium">Potensi Banjir</span>
         </a>

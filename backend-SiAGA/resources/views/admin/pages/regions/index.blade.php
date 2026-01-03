@@ -1,301 +1,367 @@
 @extends('admin.layouts.app')
 
 @section('breadcrumbs')
-    <span class="material-symbols-outlined text-sm ...">chevron_right</span>
-    <span class="text-sm font-medium text-slate-900 dark:text-white">Potensi Banjir</span>
+    <span class="material-symbols-outlined text-sm text-slate-500">chevron_right</span>
+    <span class="text-sm font-medium text-slate-900 dark:text-white">Manajemen Wilayah</span>
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        /* Paksa peta memenuhi ruang */
-        #map-container {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1;
+        body {
+            font-family: "Public Sans", sans-serif;
         }
 
-        #map {
-            width: 100%;
-            height: 100%;
-            background: #15171e;
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
         }
 
-        /* Styling Popup Leaflet */
-        .leaflet-popup-content-wrapper {
-            background-color: #1a1d2d;
-            color: white;
-            border: 1px solid #272a3a;
-            border-radius: 0.5rem;
+        /* Custom scrollbar */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        .leaflet-popup-tip {
-            background-color: #1a1d2d;
+        .dark ::-webkit-scrollbar-track {
+            background: #0f1323;
         }
 
-        /* --- PERBAIKAN DI SINI --- */
-        /* Animasi Slide untuk Detail Card */
-        .slide-in {
-            transform: translateX(0%);
+        .dark ::-webkit-scrollbar-thumb {
+            background: #21284a;
+            border-radius: 4px;
         }
 
-        .slide-out {
-            /* Geser 100% lebar kartu + 2rem (sekitar 32px) untuk margin kanan & shadow */
-            transform: translateX(calc(100% + 2rem));
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #343e6b;
         }
     </style>
 @endsection
 
 @section('content')
-    <div class="flex h-screen w-full overflow-hidden">
-        @include('admin.includes.sidebar')
 
-        <main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark">
-            @include('admin.includes.header')
+    <body
+        class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary/30">
+        <div class="flex h-screen w-full overflow-hidden">
+            @include('admin.includes.sidebar')
 
-            <div class="flex flex-1 overflow-hidden relative">
-                <div
-                    class="w-[400px] flex-shrink-0 flex flex-col border-r border-gray-200 dark:border-border-dark bg-white dark:bg-[#15171e] z-20 relative">
-                    @livewire('admin.region-manager')
-                </div>
+            <main class="flex flex-1 flex-col overflow-hidden bg-background-light dark:bg-background-dark">
+                @include('admin.includes.header')
 
-                <div class="flex-1 relative bg-gray-900" wire:ignore>
-                    <div id="map-container">
-                        <div id="map"></div>
-                    </div>
+                <div class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10">
+                    <div class="mx-auto max-w-[1200px] flex flex-col gap-6">
 
-                    <div class="absolute bottom-8 right-8 flex flex-col gap-2 z-[50]">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="font-display text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+                                Manajemen Wilayah
+                            </h1>
+                            <p class="text-slate-500 dark:text-[#8e99cc]">
+                                Kelola data wilayah rawan banjir, status risiko, dan populasi terdampak.
+                            </p>
+                        </div>
+
                         <div
-                            class="flex flex-col rounded-lg bg-surface-dark shadow-xl border border-border-dark overflow-hidden">
-                            <button onclick="map.zoomIn()"
-                                class="p-2.5 hover:bg-white/5 text-white flex items-center justify-center border-b border-white/5 bg-slate-800">
-                                <span class="material-symbols-outlined">add</span>
-                            </button>
-                            <button onclick="map.zoomOut()"
-                                class="p-2.5 hover:bg-white/5 text-white flex items-center justify-center bg-slate-800">
-                                <span class="material-symbols-outlined">remove</span>
-                            </button>
-                        </div>
-                        <button onclick="resetMap()"
-                            class="p-2.5 rounded-lg bg-surface-dark shadow-xl text-white hover:bg-white/5 border border-border-dark flex items-center justify-center bg-slate-800"
-                            title="Reset View">
-                            <span class="material-symbols-outlined">my_location</span>
-                        </button>
-                    </div>
+                            class="flex flex-col flex-wrap gap-4 rounded-xl bg-surface-light p-4 shadow-sm dark:bg-[#1a1f36] md:flex-row md:items-center md:justify-between">
 
-                    <div id="detail-card"
-                        class="slide-out absolute top-6 right-6 w-96 max-h-[calc(100%-3rem)] flex flex-col bg-[#1a1d2d]/95 backdrop-blur-md border border-[#272a3a] rounded-xl shadow-2xl z-[100] overflow-hidden transition-transform duration-300 ease-in-out">
-                        <div class="relative h-32 bg-slate-800 flex items-center justify-center overflow-hidden">
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#1a1d2d] to-transparent"></div>
-                            <button onclick="closeDetailCard()"
-                                class="absolute top-3 right-3 p-1.5 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors z-10">
-                                <span class="material-symbols-outlined text-lg">close</span>
-                            </button>
-                            <div class="absolute bottom-3 left-4 z-10">
-                                <span id="detail-badge"
-                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-500 text-white mb-1 uppercase tracking-wide">INFO</span>
-                                <h3 id="detail-title"
-                                    class="text-white font-bold text-xl leading-none shadow-black drop-shadow-md">Pilih
-                                    Wilayah</h3>
+                            <div class="flex flex-1 flex-col gap-3 md:flex-row md:items-center">
+                                <form action="{{ route('regions.index') }}" method="GET"
+                                    class="flex flex-col md:flex-row gap-3 w-full">
+
+                                    <div class="relative w-full md:w-80">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#8e99cc]">search</span>
+                                        <input name="search" value="{{ request('search') }}"
+                                            class="h-10 w-full rounded-lg border-none bg-slate-100 pl-10 pr-4 text-sm font-medium text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-primary dark:bg-[#21284a] dark:text-white dark:placeholder-[#8e99cc]"
+                                            placeholder="Cari nama wilayah atau lokasi..." type="text" />
+                                    </div>
+
+                                    <div class="relative min-w-[160px]">
+                                        <select name="status" onchange="this.form.submit()"
+                                            class="h-10 w-full cursor-pointer appearance-none rounded-lg border-none bg-slate-100 px-4 pr-10 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary dark:bg-[#21284a] dark:text-[#8e99cc]">
+                                            <option value="">Semua Status</option>
+                                            <option value="normal" {{ request('status') == 'normal' ? 'selected' : '' }}>
+                                                Normal</option>
+                                            <option value="siaga" {{ request('status') == 'siaga' ? 'selected' : '' }}>
+                                                Siaga</option>
+                                            <option value="awas" {{ request('status') == 'awas' ? 'selected' : '' }}>Awas
+                                            </option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 dark:text-[#8e99cc]">filter_list</span>
+                                    </div>
+
+                                    <button type="submit" class="hidden">Cari</button>
+                                </form>
+                            </div>
+
+                            <div class="flex gap-3">
+                                {{-- Tombol Export (Opsional) --}}
+                                <a href="{{ route('regions.export', request()->query()) }}"
+                                    class="flex h-10 items-center gap-2 rounded-lg bg-slate-100 px-4 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-200 dark:bg-[#21284a] dark:text-white dark:hover:bg-[#2e365e]">
+                                    <span class="material-symbols-outlined text-[20px]">file_download</span>
+                                    <span class="hidden sm:inline">Export</span>
+                                </a>
+
+                                <a href="{{ route('regions.create') }}"
+                                    class="flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-primary/40">
+                                    <span class="material-symbols-outlined text-[20px]">add</span>
+                                    <span>Tambah Wilayah</span>
+                                </a>
                             </div>
                         </div>
-                        <div class="p-5 overflow-y-auto custom-scrollbar">
-                            <div class="grid grid-cols-2 gap-3 mb-6">
-                                <div class="bg-black/20 p-3 rounded-lg border border-white/5">
-                                    <span class="block text-slate-400 text-xs mb-1">Koordinat</span>
-                                    <span id="detail-latlng" class="block text-white font-bold text-xs">-</span>
+
+                        <div
+                            class="overflow-hidden rounded-xl border border-slate-200 bg-surface-light shadow-sm dark:border-[#21284a] dark:bg-[#1a1f36]">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead
+                                        class="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:border-[#21284a] dark:bg-[#21284a] dark:text-[#8e99cc]">
+                                        <tr>
+                                            <th class="px-6 py-4">Nama Wilayah</th>
+                                            <th class="px-6 py-4">Lokasi & Koordinat</th>
+                                            <th class="px-6 py-4">Status Banjir</th>
+                                            <th class="px-6 py-4">Populasi</th>
+                                            <th class="px-6 py-4 text-right">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 dark:divide-[#21284a]">
+                                        @forelse ($regions as $region)
+                                            <tr
+                                                class="group transition-colors hover:bg-slate-50 dark:hover:bg-[#21284a]/50">
+
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="flex size-10 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-500/10 overflow-hidden border border-slate-200 dark:border-slate-700">
+                                                            @if ($region->photo)
+                                                                <img src="{{ asset('storage/' . $region->photo) }}"
+                                                                    alt="{{ $region->name }}"
+                                                                    class="h-full w-full object-cover">
+                                                            @else
+                                                                <span
+                                                                    class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">location_city</span>
+                                                            @endif
+                                                        </div>
+                                                        <div>
+                                                            <p class="font-semibold text-slate-900 dark:text-white">
+                                                                {{ $region->name }}
+                                                            </p>
+                                                            <p class="text-xs text-slate-500 dark:text-[#8e99cc]">
+                                                                Diupdate: {{ $region->updated_at->diffForHumans() }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    <div class="max-w-[200px]">
+                                                        <p class="text-slate-700 dark:text-slate-300 truncate"
+                                                            title="{{ $region->location }}">
+                                                            {{ $region->location ?? '-' }}
+                                                        </p>
+                                                        @if ($region->latitude && $region->longitude)
+                                                            <a href="https://www.google.com/maps/search/?api=1&query={{ $region->latitude }},{{ $region->longitude }}"
+                                                                target="_blank"
+                                                                class="mt-1 flex items-center gap-1 text-xs text-primary hover:underline">
+                                                                <span
+                                                                    class="material-symbols-outlined text-[14px]">map</span>
+                                                                {{ number_format($region->latitude, 4) }},
+                                                                {{ number_format($region->longitude, 4) }}
+                                                            </a>
+                                                        @else
+                                                            <span class="text-xs text-slate-400 italic">Koordinat belum
+                                                                diset</span>
+                                                        @endif
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    @php
+                                                        $statusColor = match ($region->flood_status) {
+                                                            'awas'
+                                                                => 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20',
+                                                            'siaga'
+                                                                => 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
+                                                            'normal'
+                                                                => 'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
+                                                            default
+                                                                => 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-700/30 dark:text-slate-400',
+                                                        };
+                                                        $dotColor = match ($region->flood_status) {
+                                                            'awas' => 'bg-red-500',
+                                                            'siaga' => 'bg-amber-500',
+                                                            'normal' => 'bg-emerald-500',
+                                                            default => 'bg-slate-500',
+                                                        };
+                                                    @endphp
+                                                    <span
+                                                        class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-bold {{ $statusColor }}">
+                                                        <span
+                                                            class="size-1.5 rounded-full {{ $dotColor }} animate-pulse"></span>
+                                                        {{ Str::ucfirst($region->flood_status) }}
+                                                    </span>
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-2">
+                                                        <span
+                                                            class="material-symbols-outlined text-slate-400 text-[18px]">group</span>
+                                                        <span class="font-medium text-slate-700 dark:text-slate-300">
+                                                            {{ $region->users_count ?? 0 }} Warga
+                                                        </span>
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex items-center justify-end gap-2">
+                                                        <a href="{{ route('regions.edit', $region->id) }}"
+                                                            class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-primary dark:hover:bg-[#2e365e] transition-colors"
+                                                            title="Edit">
+                                                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                                                        </a>
+
+                                                        <button type="button" onclick="confirmDelete({{ $region->id }})"
+                                                            class="rounded-lg p-2 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                                                            title="Hapus">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">delete</span>
+                                                        </button>
+
+                                                        <form id="delete-form-{{ $region->id }}"
+                                                            action="{{ route('regions.destroy', $region->id) }}"
+                                                            method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5"
+                                                    class="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                                                    <div class="flex flex-col items-center gap-2">
+                                                        <span
+                                                            class="material-symbols-outlined text-4xl opacity-50">map</span>
+                                                        <p>Belum ada data wilayah.</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between border-t border-slate-200 px-6 py-4 dark:border-[#21284a]">
+                                <p class="text-sm text-slate-500 dark:text-[#8e99cc]">
+                                    Menampilkan
+                                    <span
+                                        class="font-semibold text-slate-900 dark:text-white">{{ $regions->firstItem() ?? 0 }}</span>
+                                    sampai
+                                    <span
+                                        class="font-semibold text-slate-900 dark:text-white">{{ $regions->lastItem() ?? 0 }}</span>
+                                    dari
+                                    <span
+                                        class="font-semibold text-slate-900 dark:text-white">{{ $regions->total() ?? 0 }}</span>
+                                    data
+                                </p>
+
+                                <div class="flex gap-2">
+                                    {{-- Previous Page Link --}}
+                                    @if ($regions->onFirstPage())
+                                        <span
+                                            class="flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-300 dark:border-[#2e365e] dark:bg-[#1a1f36] dark:text-slate-600 cursor-not-allowed">
+                                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                                        </span>
+                                    @else
+                                        <a href="{{ $regions->previousPageUrl() }}"
+                                            class="flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-[#2e365e] dark:bg-[#21284a] dark:text-slate-400 dark:hover:bg-[#2e365e]">
+                                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                                        </a>
+                                    @endif
+
+                                    {{-- Next Page Link --}}
+                                    @if ($regions->hasMorePages())
+                                        <a href="{{ $regions->nextPageUrl() }}"
+                                            class="flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-[#2e365e] dark:bg-[#21284a] dark:text-slate-400 dark:hover:bg-[#2e365e]">
+                                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                                        </a>
+                                    @else
+                                        <span
+                                            class="flex size-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-300 dark:border-[#2e365e] dark:bg-[#1a1f36] dark:text-slate-600 cursor-not-allowed">
+                                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                                        </span>
+                                    @endif
                                 </div>
-                                <div class="bg-black/20 p-3 rounded-lg border border-white/5">
-                                    <span class="block text-slate-400 text-xs mb-1">Status</span>
-                                    <span id="detail-status-text"
-                                        class="block text-white font-bold text-sm uppercase">-</span>
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <h5 class="text-sm font-bold text-white flex items-center gap-2 mb-2">
-                                    <span class="material-symbols-outlined text-primary text-lg">note_alt</span> Catatan
-                                    Risiko
-                                </h5>
-                                <p id="detail-note"
-                                    class="text-sm text-slate-300 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                                    -</p>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-bold text-white flex items-center gap-2 mb-3">
-                                    <span class="material-symbols-outlined text-primary text-lg">sensors</span> Dipengaruhi
-                                    Oleh
-                                </h5>
-                                <div id="detail-influenced" class="flex flex-col gap-2"></div>
                             </div>
                         </div>
-                        <div class="p-4 bg-black/20 border-t border-white/10">
-                            <a id="detail-edit-link" href="#"
-                                class="block w-full py-2 px-4 rounded-lg bg-primary hover:bg-blue-600 text-white text-center text-sm font-bold transition-colors shadow-lg">Edit
-                                Data Wilayah</a>
-                        </div>
+
                     </div>
                 </div>
-            </div>
-        </main>
-    </div>
+            </main>
+        </div>
+    </body>
 @endsection
 
 @section('script')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#607afb",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1323",
+                        "surface-dark": "#1a1f36",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        display: ["Public Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                    },
+                },
+            },
+        };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        // Ambil data dari Controller dengan aman
-        const regionsData = @json($mapData ?? []);
-        console.log("Data Peta Dimuat:", regionsData);
-
-        let map;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. Inisialisasi Peta
-            // Pastikan elemen map ada sebelum inisialisasi
-            const mapContainer = document.getElementById('map');
-            if (mapContainer) {
-                map = L.map('map', {
-                    zoomControl: false
-                }).setView([-6.2088, 106.8456], 12);
-
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; CARTO',
-                    maxZoom: 20
-                }).addTo(map);
-
-                // 2. Render Marker
-                regionsData.forEach(region => {
-                    if (region.lat && region.lng) {
-                        const color = getStatusColor(region.status);
-
-                        // PERBAIKAN: Gunakan Template Literal (backtick) dengan benar
-                        // Hapus spasi berlebih untuk keamanan
-                        const iconHtml = `
-                            <div class="relative flex items-center justify-center size-8 cursor-pointer hover:scale-110 transition-transform">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-${color}-500 opacity-20"></span>
-                                <div class="relative inline-flex rounded-full h-6 w-6 bg-${color}-600 border-2 border-white shadow-lg items-center justify-center">
-                                    <span class="material-symbols-outlined text-white text-[14px]">flood</span>
-                                </div>
-                            </div>
-                        `.trim(); // Trim untuk menghapus whitespace yang tidak perlu
-
-                        const icon = L.divIcon({
-                            className: 'bg-transparent border-none',
-                            html: iconHtml,
-                            iconSize: [32, 32],
-                            iconAnchor: [16, 16]
-                        });
-
-                        const marker = L.marker([region.lat, region.lng], {
-                            icon: icon
-                        }).addTo(map);
-
-                        marker.on('click', () => {
-                            openDetail(region);
-                            map.flyTo([region.lat, region.lng], 15, {
-                                animate: true,
-                                duration: 1
-                            });
-                        });
-                    }
-                });
-            } else {
-                console.error("Elemen #map tidak ditemukan di DOM");
-            }
-
-            // 3. Livewire Listener
-            if (typeof Livewire !== 'undefined') {
-                Livewire.on('region-selected', (event) => {
-                    // Penanganan event data yang fleksibel
-                    const data = Array.isArray(event) ? event[0] : event;
-                    const {
-                        lat,
-                        lng
-                    } = data || {};
-
-                    if (lat && lng) {
-                        map.flyTo([lat, lng], 15, {
-                            animate: true,
-                            duration: 0.5
-                        });
-
-                        // Cari data region yang cocok (menggunakan toleransi float kecil)
-                        const region = regionsData.find(r =>
-                            Math.abs(r.lat - lat) < 0.0001 && Math.abs(r.lng - lng) < 0.0001
-                        );
-
-                        if (region) openDetail(region);
-                    }
-                });
-            }
-        });
-
-        // Helper Functions
-        function openDetail(region) {
-            const card = document.getElementById('detail-card');
-            const color = getStatusColor(region.status);
-
-            // Set Text Content (Lebih aman dari innerHTML untuk teks biasa)
-            document.getElementById('detail-title').textContent = region.name;
-            document.getElementById('detail-latlng').textContent = `${region.lat}, ${region.lng}`;
-            document.getElementById('detail-status-text').textContent = region.status;
-            document.getElementById('detail-note').textContent = region.note || '-';
-
-            // Build Influenced List HTML
-            const influenceList = document.getElementById('detail-influenced');
-            if (region.influenced_by) {
-                const stations = region.influenced_by.split(', ');
-                // Gunakan map dan join untuk membuat string HTML yang valid
-                const htmlContent = stations.map(st => `
-                    <div class="flex items-center gap-2 p-2 rounded bg-white/5 border border-white/10">
-                        <div class="size-2 rounded-full bg-blue-500"></div>
-                        <span class="text-sm text-slate-300">${st}</span>
-                    </div>
-                `).join('');
-                influenceList.innerHTML = htmlContent;
-            } else {
-                influenceList.innerHTML = '<span class="text-xs text-slate-500 italic">Belum ada data stasiun.</span>';
-            }
-
-            // Update Badge Class
-            const badge = document.getElementById('detail-badge');
-            badge.className =
-                `inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-${color}-500 text-white mb-1 uppercase tracking-wide`;
-            badge.textContent = region.status;
-
-            // Update Link
-            const editLink = document.getElementById('detail-edit-link');
-            if (editLink) editLink.href = `/admin/regions/${region.id}/edit`;
-
-            // Show Card
-            if (card) {
-                card.classList.remove('slide-out');
-                card.classList.add('slide-in');
-            }
-        }
-
-        function closeDetailCard() {
-            const card = document.getElementById('detail-card');
-            if (card) {
-                card.classList.remove('slide-in');
-                card.classList.add('slide-out');
-            }
-        }
-
-        function resetMap() {
-            if (map) {
-                map.flyTo([-6.2088, 106.8456], 12);
-                closeDetailCard();
-            }
-        }
-
-        function getStatusColor(status) {
-            if (status === 'awas') return 'red';
-            if (status === 'siaga') return 'orange';
-            return 'green';
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Hapus Wilayah?',
+                text: "Data wilayah dan relasinya akan dihapus permanen!",
+                icon: 'warning',
+                background: '#1a1f36',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
         }
     </script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                background: '#1a1f36',
+                color: '#fff',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 @endsection
